@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: fint-kontroll-device-catalog
+  profiles:
+    include:
+      - db

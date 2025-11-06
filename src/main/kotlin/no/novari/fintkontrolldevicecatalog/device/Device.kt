@@ -1,15 +1,7 @@
 package no.novari.fintkontrolldevicecatalog.device
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.util.Date
-
 
 @Entity
 @Table(name = "device")
@@ -29,10 +21,6 @@ data class Device (
     val administratorOrgUnitId: String?,
     val ownerOrgUnitId: String?,
 
-    @OneToMany(mappedBy = "device", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    val memberships: MutableSet<DeviceGroupMembership>
-
-
-
-
+    @OneToMany(mappedBy = "device", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
+    val memberships: MutableSet<DeviceGroupMembership> = mutableSetOf()
 )

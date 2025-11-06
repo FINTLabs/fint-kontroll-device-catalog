@@ -38,13 +38,14 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'no.fintlabs:fint-kafka:5.0.0-rc-15'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
-//    implementation 'org.flywaydb:flyway-core'
-//    implementation 'org.flywaydb:flyway-database-postgresql'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
     apply plugin: 'kotlin'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    runtimeOnly 'org.postgresql:postgresql'
 
 }
 
