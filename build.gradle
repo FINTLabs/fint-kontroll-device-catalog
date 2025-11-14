@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'no.fintlabs:fint-kafka:5.0.0-rc-15'
+    implementation 'no.fintlabs:fint-flyt-cache:1.0.0'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
