@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "device_groups")
 data class DeviceGroup (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
+    val id: Long? = null,
     val sourceId: String,
     val name: String,
     val orgUnitId: String?,
