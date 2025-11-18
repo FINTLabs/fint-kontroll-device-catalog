@@ -1,5 +1,6 @@
 package no.novari.fintkontrolldevicecatalog.device
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -13,6 +14,8 @@ data class DeviceGroup (
     val platform: String,
     val deviceType: String,
 
+    @JsonIgnore
+    @Transient
     @OneToMany(mappedBy = "deviceGroup", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
     val memberships: MutableSet<DeviceGroupMembership> = mutableSetOf()
 )

@@ -33,6 +33,7 @@ class DevicePersistenceService(
     }
 
     private fun handleMembership(kafkaDeviceGroupMembership: KafkaDeviceGroupMembership) {
+        println("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
         val group = deviceGroupRepository.findBySourceId(kafkaDeviceGroupMembership.groupId)
             ?: throw IllegalStateException("DeviceGroup not found for sourceId=${kafkaDeviceGroupMembership.groupId}")
         val device = deviceRepository.findBySourceId(kafkaDeviceGroupMembership.deviceId)

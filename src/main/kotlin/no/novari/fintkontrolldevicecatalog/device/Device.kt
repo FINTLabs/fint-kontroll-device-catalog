@@ -1,5 +1,6 @@
 package no.novari.fintkontrolldevicecatalog.device
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.util.Date
 
@@ -21,6 +22,8 @@ data class Device (
     val administratorOrgUnitId: String?,
     val ownerOrgUnitId: String?,
 
+    @JsonIgnore
+    @Transient
     @OneToMany(mappedBy = "device", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
     val memberships: MutableSet<DeviceGroupMembership> = mutableSetOf()
 )

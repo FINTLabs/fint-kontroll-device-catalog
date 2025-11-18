@@ -92,7 +92,6 @@ class DeviceMappingService {
             id = id,
             deviceGroup = group,
             device = device,
-            groupId = kafkaDeviceGroupMembership.groupId,
             membershipStatus = null,
             membershipStatusChanged = null
         )
@@ -100,7 +99,6 @@ class DeviceMappingService {
         return base.copy(
             deviceGroup = group,
             device = device,
-            groupId = kafkaDeviceGroupMembership.groupId,
             membershipStatus = base.membershipStatus,
             membershipStatusChanged = base.membershipStatusChanged
         )
