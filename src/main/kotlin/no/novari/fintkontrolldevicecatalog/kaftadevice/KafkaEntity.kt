@@ -25,7 +25,6 @@ data class KafkaDeviceGroup(
 ) : KafkaEntity
 
 data class KafkaDeviceGroupMembership(
-    val id: String,
     val groupId: String,
     val deviceId: String
 ) : KafkaEntity

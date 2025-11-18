@@ -8,18 +8,6 @@ import java.util.*
 @Service
 class DeviceMappingService {
 
-//    fun <T : KafkaEntity> mapToKontrollEntity(
-//        source: T,
-//        existing: Any? = null
-//    ): Any =
-//        when (source) {
-//            is KafkaDevice -> mapKafkaDevice(source, existing as? Device)
-//            is KafkaDeviceGroup -> mapKafkaDeviceGroup(source, existing as? DeviceGroup)
-//            is KafkaDeviceGroupMembership ->
-//                error("Use mapKafkaDeviceGroupMembership(...) which needs Device + DeviceGroup.")
-//        }
-
-
     fun mapKafkaDevice(
         kafkaDevice: KafkaDevice,
         existing: Device? = null
@@ -93,7 +81,7 @@ class DeviceMappingService {
         group: DeviceGroup,
         existing: DeviceGroupMembership? = null
     ): DeviceGroupMembership {
-        println("Mapping KafkaDeviceGroupMembership: id=${kafkaDeviceGroupMembership.id}, groupId=${kafkaDeviceGroupMembership.groupId}, deviceId=${kafkaDeviceGroupMembership.deviceId}")
+        println("Mapping KafkaDeviceGroupMembership: groupId=${kafkaDeviceGroupMembership.groupId}, deviceId=${kafkaDeviceGroupMembership.deviceId}")
 
         val id = existing?.id ?: DeviceGroupMembershipId(
             deviceGroupId = group.id!!,
@@ -112,7 +100,7 @@ class DeviceMappingService {
         return base.copy(
             deviceGroup = group,
             device = device,
-            groupId = kafkaDeviceGroupMembership.groupId ?: base.groupId,
+            groupId = kafkaDeviceGroupMembership.groupId,
             membershipStatus = base.membershipStatus,
             membershipStatusChanged = base.membershipStatusChanged
         )
