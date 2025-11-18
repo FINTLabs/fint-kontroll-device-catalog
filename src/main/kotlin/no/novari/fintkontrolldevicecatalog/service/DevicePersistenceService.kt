@@ -9,7 +9,8 @@ class DevicePersistenceService(
     private val deviceRepository: DeviceRepository,
     private val deviceGroupRepository: DeviceGroupRepository,
     private val deviceGroupMembershipRepository: DeviceGroupMembershipRepository,
-    private val deviceMappingService: DeviceMappingService
+    private val deviceMappingService: DeviceMappingService,
+    private val membershipRetryBuffer: MembershipRetryBuffer
 ) {
 
     fun <T : KafkaEntity> handle(entity: T) {
@@ -35,9 +36,12 @@ class DevicePersistenceService(
     private fun handleMembership(kafkaDeviceGroupMembership: KafkaDeviceGroupMembership) {
         println("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
         val group = deviceGroupRepository.findBySourceId(kafkaDeviceGroupMembership.groupId)
-            ?: throw IllegalStateException("DeviceGroup not found for sourceId=${kafkaDeviceGroupMembership.groupId}")
         val device = deviceRepository.findBySourceId(kafkaDeviceGroupMembership.deviceId)
-            ?: throw IllegalStateException("Device not found for sourceId=${kafkaDeviceGroupMembership.deviceId}")
+
+        if (group == null || device == null) {
+            membershipRetryBuffer.add(kafkaDeviceGroupMembership)
+            return
+        }
 
         val id = DeviceGroupMembershipId(
             deviceGroupId = group.id!!,
