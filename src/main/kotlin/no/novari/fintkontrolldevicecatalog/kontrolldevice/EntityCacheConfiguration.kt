@@ -2,9 +2,6 @@ package no.novari.fintkontrolldevicecatalog.kontrolldevice
 
 import no.fintlabs.cache.FintCache
 import no.fintlabs.cache.FintCacheManager
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDevice
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceGroup
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceGroupMembership
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.util.Locale

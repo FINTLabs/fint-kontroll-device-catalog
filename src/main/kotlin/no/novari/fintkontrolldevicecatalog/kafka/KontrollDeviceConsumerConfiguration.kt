@@ -4,12 +4,12 @@ import no.fintlabs.kafka.consuming.ListenerConfiguration
 import no.fintlabs.kafka.consuming.ParameterizedListenerContainerFactoryService
 import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
 import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
-import no.novari.fintkontrolldevicecatalog.kaftadevice.KafkaEntity
 import no.novari.fintkontrolldevicecatalog.kontrolldevice.EntityCacheConfiguration
 import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDevice
 import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceGroupMembership
 import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceService
+import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollEntity
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -33,11 +33,13 @@ class KontrollDeviceConsumerConfiguration(
     fun kontrollDeviceGroupConsumer() = createListener("kontrolldevicegroup", KontrollDeviceGroup::class)
 
     @Bean
-    fun kontrollDeviceGroupMembershipConsumer() = createListener("kontrolldevicegroupmembership",KontrollDeviceGroupMembership)
+    fun kontrollDeviceGroupMembershipConsumer() = createListener("kontrolldevicegroupmembership",
+        KontrollDeviceGroupMembership::class
+    )
 
 
 
-    private fun <T : KafkaEntity> createListener(
+    private fun <T : KontrollEntity> createListener(
         topicName: String,
         mappedClass: KClass<T>
     )
