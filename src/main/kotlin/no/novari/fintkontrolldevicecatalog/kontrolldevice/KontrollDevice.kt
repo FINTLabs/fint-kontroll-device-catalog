@@ -1,7 +1,8 @@
 package no.novari.fintkontrolldevicecatalog.kontrolldevice
 
-class KontrollDevice(
+data class KontrollDevice(
     val id: String,
+    val sourceId: String,
     val serialNumber: String,
     val dataObjectId: String?,
     val name: String,

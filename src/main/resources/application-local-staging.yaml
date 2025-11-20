@@ -9,10 +9,14 @@ fint:
     consumer:
       group-id: ${fint.application-id}
     topic:
-      #org-id: ${fint.org-id}
       org-id: fintlabs-no
       domain-context: kontroll
     application-id: fint-kontroll-device-catalog
+  kontroll:
+    publishing:
+      initial-delay: 100000
+      fixed-delay: 300000
+
 spring:
   application:
     name: fint-kontroll-device-catalog
@@ -25,7 +29,6 @@ spring:
   kafka:
     consumer:
       group-id: fint-kontroll-device-catalog
-    #bootstrap-servers: localhost:9092
 
   jpa:
     hibernate:
@@ -49,3 +52,4 @@ logging:
     org.apache.kafka.clients.producer: WARN
     org.springframework.kafka: WARN
     no.fintlabs.kafka: WARN
+    no.fintlabs.cache.ehcache.FintEhCacheEventLogger: WARN
