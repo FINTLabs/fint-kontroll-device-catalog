@@ -1,4 +1,4 @@
-package no.novari.fintkontrolldevicecatalog.device
+package no.novari.fintkontrolldevicecatalog.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*

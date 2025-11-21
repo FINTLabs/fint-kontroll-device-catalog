@@ -4,23 +4,23 @@ import no.fintlabs.kafka.consuming.ListenerConfiguration
 import no.fintlabs.kafka.consuming.ParameterizedListenerContainerFactoryService
 import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
 import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
-import no.novari.fintkontrolldevicecatalog.kaftadevice.KafkaDevice
-import no.novari.fintkontrolldevicecatalog.kaftadevice.KafkaDeviceGroup
-import no.novari.fintkontrolldevicecatalog.kaftadevice.KafkaDeviceGroupMembership
-import no.novari.fintkontrolldevicecatalog.kaftadevice.KafkaEntity
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDevice
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroup
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroupMembership
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaEntity
 import no.novari.fintkontrolldevicecatalog.service.DevicePersistenceService
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.listener.CommonErrorHandler
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer
-import org.springframework.kafka.listener.DefaultErrorHandler
 import kotlin.reflect.KClass
 
 @Configuration
 class DeviceConsumerConfiguration(
     private val devicePersistenceService: DevicePersistenceService,
     private val parameterizedListenerContainerFactoryService: ParameterizedListenerContainerFactoryService,
+    private val kafkaCommonErrorHandler: CommonErrorHandler
 ) {
 
     @Bean
@@ -47,7 +47,7 @@ class DeviceConsumerConfiguration(
 
             },
             listenerConfiguration(),
-            kafkaCommonErrorHandler()
+            kafkaCommonErrorHandler
 
         )
 
@@ -70,8 +70,5 @@ class DeviceConsumerConfiguration(
         .seekingOffsetResetOnAssignment(false)
         .maxPollRecords(10)
         .build()
-
-    @Bean
-    fun kafkaCommonErrorHandler(): CommonErrorHandler = DefaultErrorHandler()
 
 }

@@ -1,11 +1,11 @@
-package no.novari.fintkontrolldevicecatalog.kontrolldevice
+package no.novari.fintkontrolldevicecatalog.kontrollentity
 
 import java.util.Date
 
 sealed interface KontrollEntity
 
 data class KontrollDevice(
-    val id: String,
+    val id: Long,
     val sourceId: String,
     val serialNumber: String,
     val dataObjectId: String?,
@@ -31,7 +31,6 @@ data class KontrollDeviceGroup(
 data class KontrollDeviceGroupMembership(
     val deviceGroupId: Long,
     val deviceId: Long,
-    val membershipStatus: String,
-    val membershipStatusChanged: Date
+    val membershipStatus: String
 ) : KontrollEntity
 

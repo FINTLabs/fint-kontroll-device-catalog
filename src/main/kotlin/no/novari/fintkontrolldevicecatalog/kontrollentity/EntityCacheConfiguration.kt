@@ -1,4 +1,4 @@
-package no.novari.fintkontrolldevicecatalog.kontrolldevice
+package no.novari.fintkontrolldevicecatalog.kontrollentity
 
 import no.fintlabs.cache.FintCache
 import no.fintlabs.cache.FintCacheManager
@@ -29,17 +29,17 @@ class EntityCacheConfiguration(
     }
 
 
-//    @Bean
-//    fun cacheMap(
-//        kontrollDeviceCache: FintCache<String, KontrollDevice>,
-//        kontrollDeviceGroupCache: FintCache<String, KontrollDeviceGroup>,
-//        kontrollDeviceGroupMembershipCache: FintCache<String, KontrollDeviceGroupMembership>,
-//    ): Map<KClass<*>, FintCache<String, *>> =
-//        mapOf(
-//            KontrollDevice::class to kontrollDeviceCache,
-//            KontrollDeviceGroup::class to kontrollDeviceGroupCache,
-//            KontrollDeviceGroupMembership::class to kontrollDeviceGroupMembershipCache
-//        )
+    @Bean
+    fun cacheMap(
+        kontrollDeviceCache: FintCache<String, KontrollDevice>,
+        kontrollDeviceGroupCache: FintCache<String, KontrollDeviceGroup>,
+        kontrollDeviceGroupMembershipCache: FintCache<String, KontrollDeviceGroupMembership>,
+    ): Map<KClass<*>, FintCache<String, *>> =
+        mapOf(
+            KontrollDevice::class to kontrollDeviceCache,
+            KontrollDeviceGroup::class to kontrollDeviceGroupCache,
+            KontrollDeviceGroupMembership::class to kontrollDeviceGroupMembershipCache
+        )
 
     private fun <V : Any> createCache(resourceClass: KClass<V>): FintCache<String, V> =
         fintCacheManager.createCache(

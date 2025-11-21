@@ -1,6 +1,6 @@
-package no.novari.fintkontrolldevicecatalog.device
+package no.novari.fintkontrolldevicecatalog.entity
 
-import no.novari.fintkontrolldevicecatalog.kaftadevice.KafkaDeviceGroupMembership
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroupMembership
 import org.springframework.stereotype.Component
 import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue

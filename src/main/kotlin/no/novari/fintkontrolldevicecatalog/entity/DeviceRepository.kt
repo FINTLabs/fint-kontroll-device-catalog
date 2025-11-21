@@ -1,4 +1,4 @@
-package no.novari.fintkontrolldevicecatalog.device
+package no.novari.fintkontrolldevicecatalog.entity
 
 import org.springframework.data.jpa.repository.JpaRepository
 

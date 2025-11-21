@@ -1,4 +1,4 @@
-package no.novari.fintkontrolldevicecatalog.kaftadevice
+package no.novari.fintkontrolldevicecatalog.kaftaentity
 
 sealed interface KafkaEntity
 

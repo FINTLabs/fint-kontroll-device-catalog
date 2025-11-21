@@ -1,18 +1,18 @@
 package no.novari.fintkontrolldevicecatalog.service
 
-import no.novari.fintkontrolldevicecatalog.device.*
-import no.novari.fintkontrolldevicecatalog.kaftadevice.*
+import no.novari.fintkontrolldevicecatalog.entity.*
+import no.novari.fintkontrolldevicecatalog.kaftaentity.*
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class DeviceMappingService {
 
-    fun mapKafkaDevice(
+    fun mapKafkaDeviceToDevice(
         kafkaDevice: KafkaDevice,
         existing: Device? = null
     ): Device {
-        println("Mapping KafkaDevice: systemId=${kafkaDevice.systemId}, platform=${kafkaDevice.platform}")
+        println("Mapping KafkaDevice to Device: systemId=${kafkaDevice.systemId}, platform=${kafkaDevice.platform}")
 
         val base = existing ?: Device(
             sourceId = kafkaDevice.systemId,
@@ -50,11 +50,11 @@ class DeviceMappingService {
         )
     }
 
-    fun mapKafkaDeviceGroup(
+    fun mapKafkaDeviceGroupToDeviceGroup(
         kafkaDeviceGroup: KafkaDeviceGroup,
         existing: DeviceGroup? = null
     ): DeviceGroup {
-        println("Mapping KafkaDeviceGroup: systemId=${kafkaDeviceGroup.systemId}, name=${kafkaDeviceGroup.name}")
+        println("Mapping KafkaDeviceGroup to DeviceGroup: systemId=${kafkaDeviceGroup.systemId}, name=${kafkaDeviceGroup.name}")
 
         val base = existing ?: DeviceGroup(
             sourceId = kafkaDeviceGroup.systemId,
@@ -75,7 +75,7 @@ class DeviceMappingService {
     }
 
 
-    fun mapKafkaDeviceGroupMembership(
+    fun mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
         kafkaDeviceGroupMembership: KafkaDeviceGroupMembership,
         device: Device,
         group: DeviceGroup,

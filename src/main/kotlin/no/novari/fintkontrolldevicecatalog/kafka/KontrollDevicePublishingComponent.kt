@@ -9,13 +9,15 @@ import no.fintlabs.kafka.topic.configuration.EntityCleanupFrequency
 import no.fintlabs.kafka.topic.configuration.EntityTopicConfiguration
 import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
 import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDevice
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Component
 import java.time.Duration
 
 private val logger = LoggerFactory.getLogger(KontrollDevicePublishingComponent::class.java)
 
+@Component
 class KontrollDevicePublishingComponent(
     private val deviceCache: FintCache<String, KontrollDevice>,
     parameterizedTemplateFactory: ParameterizedTemplateFactory,

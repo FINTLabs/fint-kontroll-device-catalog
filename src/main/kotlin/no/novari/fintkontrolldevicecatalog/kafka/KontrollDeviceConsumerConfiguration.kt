@@ -4,18 +4,16 @@ import no.fintlabs.kafka.consuming.ListenerConfiguration
 import no.fintlabs.kafka.consuming.ParameterizedListenerContainerFactoryService
 import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
 import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.EntityCacheConfiguration
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDevice
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceGroup
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceGroupMembership
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollDeviceService
-import no.novari.fintkontrolldevicecatalog.kontrolldevice.KontrollEntity
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceService
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntity
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.listener.CommonErrorHandler
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer
-import org.springframework.kafka.listener.DefaultErrorHandler
 import kotlin.String
 import kotlin.reflect.KClass
 
@@ -23,8 +21,8 @@ import kotlin.reflect.KClass
 @Configuration
 class KontrollDeviceConsumerConfiguration(
     private val parameterizedListenerContainerFactoryService: ParameterizedListenerContainerFactoryService,
-    private val entityCacheConfiguration: EntityCacheConfiguration,
-    private val kontrollDeviceService: KontrollDeviceService
+    private val kontrollDeviceService: KontrollDeviceService,
+    private val kafkaCommonErrorHandler: CommonErrorHandler
 ) {
     @Bean
     fun kontrollDeviceConsumer() = createListener("kontrolldevice", KontrollDevice::class)
@@ -49,11 +47,11 @@ class KontrollDeviceConsumerConfiguration(
         val factory = parameterizedListenerContainerFactoryService.createRecordListenerContainerFactory(
             mappedClass.java,
             { consumerRecord: ConsumerRecord<String, T> ->
-                kontrollDeviceService.handle(consumerRecord.value())
+                kontrollDeviceService.saveToCache(consumerRecord.value())
 
             },
             listenerConfiguration(),
-            kafkaCommonErrorHandler()
+            kafkaCommonErrorHandler
 
         )
 
@@ -76,9 +74,5 @@ class KontrollDeviceConsumerConfiguration(
         .seekingOffsetResetOnAssignment(false)
         .maxPollRecords(10)
         .build()
-
-    @Bean
-    fun kafkaCommonErrorHandler(): CommonErrorHandler = DefaultErrorHandler()
-
 
 }

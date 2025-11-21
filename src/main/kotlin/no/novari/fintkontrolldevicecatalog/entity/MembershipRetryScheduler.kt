@@ -1,4 +1,4 @@
-package no.novari.fintkontrolldevicecatalog.device
+package no.novari.fintkontrolldevicecatalog.entity
 
 import no.novari.fintkontrolldevicecatalog.service.DevicePersistenceService
 import org.springframework.scheduling.annotation.Scheduled

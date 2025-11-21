@@ -1,4 +1,4 @@
-package no.novari.fintkontrolldevicecatalog.device
+package no.novari.fintkontrolldevicecatalog.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
