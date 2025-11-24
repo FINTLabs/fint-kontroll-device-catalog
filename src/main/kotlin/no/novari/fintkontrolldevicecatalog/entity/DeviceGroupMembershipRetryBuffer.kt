@@ -6,7 +6,7 @@ import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 
 @Component
-class MembershipRetryBuffer {
+class DeviceGroupMembershipRetryBuffer {
     private val buffer: Queue<KafkaDeviceGroupMembership> = ConcurrentLinkedQueue()
 
     fun add(membership: KafkaDeviceGroupMembership) {

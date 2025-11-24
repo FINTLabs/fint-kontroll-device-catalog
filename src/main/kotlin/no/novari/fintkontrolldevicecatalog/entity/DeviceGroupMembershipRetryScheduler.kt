@@ -5,14 +5,14 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
-class MembershipRetryScheduler(
-    private val membershipRetryBuffer: MembershipRetryBuffer,
+class DeviceGroupMembershipRetryScheduler(
+    private val deviceGroupMembershipRetryBuffer: DeviceGroupMembershipRetryBuffer,
     private val devicePersistenceService: DevicePersistenceService
 ) {
 
     @Scheduled(fixedDelay = 10000)
     fun retryBufferedMemberships() {
-        val membershipsToRetry = membershipRetryBuffer.drain()
+        val membershipsToRetry = deviceGroupMembershipRetryBuffer.drain()
 
         if (membershipsToRetry.isNotEmpty()) {
             println("Retrying ${membershipsToRetry.size} buffered memberships...")
@@ -23,7 +23,7 @@ class MembershipRetryScheduler(
                 devicePersistenceService.handle(membership)
             } catch (e: Exception) {
                 println("Retry failed for ${membership.deviceId}_${membership.groupId}: ${e.message}")
-                membershipRetryBuffer.add(membership)
+                deviceGroupMembershipRetryBuffer.add(membership)
             }
         }
     }

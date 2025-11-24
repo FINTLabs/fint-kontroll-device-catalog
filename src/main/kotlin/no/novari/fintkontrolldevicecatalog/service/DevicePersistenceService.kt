@@ -9,7 +9,6 @@ import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
 import org.springframework.stereotype.Service
-import java.security.PrivateKey
 
 @Service
 class DevicePersistenceService(
@@ -17,7 +16,7 @@ class DevicePersistenceService(
     private val deviceGroupRepository: DeviceGroupRepository,
     private val deviceGroupMembershipRepository: DeviceGroupMembershipRepository,
     private val deviceMappingService: DeviceMappingService,
-    private val membershipRetryBuffer: MembershipRetryBuffer,
+    private val deviceGroupMembershipRetryBuffer: DeviceGroupMembershipRetryBuffer,
     private val kontrollDeviceMappingService: KontrollDeviceMappingService,
     private val kontrollDevicePublishingComponent: KontrollDevicePublishingComponent,
     private val kontrollDeviceGroupPublishingComponent: KontrollDeviceGroupPublishingComponent,
@@ -55,7 +54,7 @@ class DevicePersistenceService(
         val device = deviceRepository.findBySourceId(kafkaDeviceGroupMembership.deviceId)
 
         if (group == null || device == null) {
-            membershipRetryBuffer.add(kafkaDeviceGroupMembership)
+            deviceGroupMembershipRetryBuffer.add(kafkaDeviceGroupMembership)
             return
         }
 
