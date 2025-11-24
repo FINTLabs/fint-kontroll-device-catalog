@@ -1,5 +1,5 @@
 -- DEVICE
-CREATE TABLE IF NOT EXISTS device (
+CREATE TABLE IF NOT EXISTS devices (
                                       id                       BIGSERIAL PRIMARY KEY,
                                       source_id                VARCHAR(255) NOT NULL,
                                       serial_number            VARCHAR(255) NOT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS device (
                                       owner_org_unit_id         VARCHAR(255)
 );
 
-CREATE INDEX IF NOT EXISTS ix_device_serial_number ON device(serial_number);
-CREATE INDEX IF NOT EXISTS ix_device_status ON device(status);
+CREATE INDEX IF NOT EXISTS ix_device_serial_number ON devices(serial_number);
+CREATE INDEX IF NOT EXISTS ix_device_status ON devices(status);
 
 -- DEVICE_GROUPS
 CREATE TABLE IF NOT EXISTS device_groups (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS device_groups (
 CREATE UNIQUE INDEX IF NOT EXISTS ux_device_groups_source_id ON device_groups(source_id);
 
 -- DEVICE_GROUP_MEMBERSHIP
-CREATE TABLE IF NOT EXISTS device_group_membership (
+CREATE TABLE IF NOT EXISTS device_group_memberships (
                                                        device_group_id bigint not null,
                                                        device_id bigint not null,
                                                        membership_status            VARCHAR(50),
@@ -39,11 +39,11 @@ CREATE TABLE IF NOT EXISTS device_group_membership (
                                                        primary key (device_group_id, device_id),
 
                                                        CONSTRAINT fk_dgm_device
-                                                           FOREIGN KEY (device_id) REFERENCES device(id),
+                                                           FOREIGN KEY (device_id) REFERENCES devices(id),
 
                                                        CONSTRAINT fk_dgm_device_group
                                                            FOREIGN KEY (device_group_id) REFERENCES device_groups(id)
 );
 
-CREATE INDEX IF NOT EXISTS ix_dgm_device_id ON device_group_membership(device_id);
-CREATE INDEX IF NOT EXISTS ix_dgm_device_group_id ON device_group_membership(device_group_id);
+CREATE INDEX IF NOT EXISTS ix_dgm_device_id ON device_group_memberships(device_id);
+CREATE INDEX IF NOT EXISTS ix_dgm_device_group_id ON device_group_memberships(device_group_id);

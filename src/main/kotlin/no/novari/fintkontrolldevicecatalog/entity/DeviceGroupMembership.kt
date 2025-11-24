@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.util.Date
 
 @Entity
-@Table(name = "device_group_membership")
+@Table(name = "device_group_memberships")
 data class DeviceGroupMembership(
 
     @EmbeddedId

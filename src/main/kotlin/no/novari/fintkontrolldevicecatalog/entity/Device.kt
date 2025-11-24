@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.util.Date
 
 @Entity
-@Table(name = "device")
+@Table(name = "devices")
 data class Device (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
