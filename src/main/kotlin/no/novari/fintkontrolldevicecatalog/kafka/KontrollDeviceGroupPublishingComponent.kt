@@ -9,25 +9,24 @@ import no.fintlabs.kafka.topic.configuration.EntityCleanupFrequency
 import no.fintlabs.kafka.topic.configuration.EntityTopicConfiguration
 import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
 import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
-import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.Duration
 
-private val logger = LoggerFactory.getLogger(KontrollDevicePublishingComponent::class.java)
+private val logger = LoggerFactory.getLogger(KontrollDeviceGroupPublishingComponent::class.java)
 
 @Component
-class KontrollDevicePublishingComponent(
-    private val deviceCache: FintCache<String, KontrollDevice>,
+class KontrollDeviceGroupPublishingComponent(
+    private val deviceCache: FintCache<String, KontrollDeviceGroup>,
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
     entityTopicService: EntityTopicService
 ) {
-    private val parameterizedTemplate: ParameterizedTemplate<KontrollDevice> =
-        parameterizedTemplateFactory.createTemplate(KontrollDevice::class.java)
+    private val parameterizedTemplate: ParameterizedTemplate<KontrollDeviceGroup> =
+        parameterizedTemplateFactory.createTemplate(KontrollDeviceGroup::class.java)
 
     private val entityTopicNameParameters : EntityTopicNameParameters = EntityTopicNameParameters.builder()
-        .resourceName("kontroll-device")
+        .resourceName("kontroll-device-group")
         .topicNamePrefixParameters(topicNameParameters())
         .build()
 
@@ -53,38 +52,16 @@ class KontrollDevicePublishingComponent(
         )
     }
 
-//    @Scheduled(
-//        fixedDelayString = "\${fint.kontroll.publishing.fixed-delay:PT5M}",
-//        initialDelayString = "\${fint.kontroll.publishing.initial-delay:PT5M}"
-//    )
-    fun publishAll() {
-        val allKontrollDevices = deviceCache.getAll() //TODO: move to separate service
-        val allKontrollDevicesToPublish = allKontrollDevices
-            .mapNotNull { kontrollDevice ->
-                val key = kontrollDevice.sourceId
-                val cachedKontrollDevice = deviceCache.getOptional(key).orElse(null)
-                if (cachedKontrollDevice != null || cachedKontrollDevice != kontrollDevice) kontrollDevice else null
-            }
-            .toList()
-
-        allKontrollDevicesToPublish.forEach { publishOne(it)}
-
-        logger.info("All Kontroll devices published")
-    }
-
-    fun publishOne(kontrollDevice: KontrollDevice) {
-        val produserRecord = ParameterizedProducerRecord.builder<KontrollDevice>()
+    fun publishOne(kontrollDeviceGroup: KontrollDeviceGroup) {
+        val produserRecord = ParameterizedProducerRecord.builder<KontrollDeviceGroup>()
             .topicNameParameters(entityTopicNameParameters)
-            .key(kontrollDevice.sourceId)
-            .value(kontrollDevice)
-        .build()
+            .key(kontrollDeviceGroup.sourceId)
+            .value(kontrollDeviceGroup)
+            .build()
 
         parameterizedTemplate.send(produserRecord)
-        logger.info("Published kontrolldevice with sourceId: ${kontrollDevice.sourceId} and name: ${kontrollDevice.name}")
+        logger.info("Published kontrolldevicegroup with sourceId: ${kontrollDeviceGroup.sourceId} and name: ${kontrollDeviceGroup.name}")
     }
 
 
 }
-
-
-

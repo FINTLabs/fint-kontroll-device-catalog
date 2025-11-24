@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 import kotlin.to
 
 @Configuration
-class EntityCacheConfiguration(
+class KontrollEntityCacheConfiguration(
     private val fintCacheManager: FintCacheManager
 ) {
     @Bean

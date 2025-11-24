@@ -17,5 +17,5 @@ data class DeviceGroup (
     @JsonIgnore
     @Transient
     @OneToMany(mappedBy = "deviceGroup", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
-    val memberships: MutableSet<DeviceGroupMembership> = mutableSetOf()
+    val memberships: MutableSet<DeviceGroupMembership>? = mutableSetOf()
 )

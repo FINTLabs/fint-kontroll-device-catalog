@@ -4,7 +4,7 @@ import no.novari.fintkontrolldevicecatalog.service.CacheService
 import org.springframework.stereotype.Service
 
 @Service
-class KontrollDeviceService(
+class KontrollEntityService(
     private val cacheService: CacheService
 ) {
     fun <T : KontrollEntity>saveToCache(entity: T) {
@@ -21,11 +21,11 @@ class KontrollDeviceService(
     }
 
     private fun saveKontrollDeviceGroupToCache(entity: KontrollDeviceGroup) {
-        TODO("Not yet implemented")
+        cacheService.put(entity.id.toString(),entity, KontrollDeviceGroup::class)
     }
 
     private fun saveKontrollDeviceGroupMembershipToCache(entity: KontrollDeviceGroupMembership) {
-        TODO("Not yet implemented")
+        cacheService.put("${entity.deviceGroupId}_${entity.deviceId}",entity, KontrollDeviceGroupMembership::class)
     }
 
 

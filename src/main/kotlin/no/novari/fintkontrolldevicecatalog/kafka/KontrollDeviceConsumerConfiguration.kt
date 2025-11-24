@@ -7,7 +7,7 @@ import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
-import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceService
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntityService
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntity
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Bean
@@ -21,17 +21,17 @@ import kotlin.reflect.KClass
 @Configuration
 class KontrollDeviceConsumerConfiguration(
     private val parameterizedListenerContainerFactoryService: ParameterizedListenerContainerFactoryService,
-    private val kontrollDeviceService: KontrollDeviceService,
+    private val kontrollEntityService: KontrollEntityService,
     private val kafkaCommonErrorHandler: CommonErrorHandler
 ) {
     @Bean
-    fun kontrollDeviceConsumer() = createListener("kontrolldevice", KontrollDevice::class)
+    fun kontrollDeviceConsumer() = createListener("kontroll-device", KontrollDevice::class)
 
     @Bean
-    fun kontrollDeviceGroupConsumer() = createListener("kontrolldevicegroup", KontrollDeviceGroup::class)
+    fun kontrollDeviceGroupConsumer() = createListener("kontroll-device-group", KontrollDeviceGroup::class)
 
     @Bean
-    fun kontrollDeviceGroupMembershipConsumer() = createListener("kontrolldevicegroupmembership",
+    fun kontrollDeviceGroupMembershipConsumer() = createListener("kontroll-device-group-membership",
         KontrollDeviceGroupMembership::class
     )
 
@@ -47,7 +47,7 @@ class KontrollDeviceConsumerConfiguration(
         val factory = parameterizedListenerContainerFactoryService.createRecordListenerContainerFactory(
             mappedClass.java,
             { consumerRecord: ConsumerRecord<String, T> ->
-                kontrollDeviceService.saveToCache(consumerRecord.value())
+                kontrollEntityService.saveToCache(consumerRecord.value())
 
             },
             listenerConfiguration(),
