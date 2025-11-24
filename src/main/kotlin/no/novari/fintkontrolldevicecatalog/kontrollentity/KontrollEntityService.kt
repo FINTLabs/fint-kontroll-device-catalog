@@ -5,7 +5,6 @@ import no.novari.fintkontrolldevicecatalog.entity.DeviceGroupRepository
 import no.novari.fintkontrolldevicecatalog.service.CacheService
 import no.novari.fintkontrolldevicecatalog.service.KontrollDeviceMappingService
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,7 +13,7 @@ class KontrollEntityService(
     private val deviceGroupRepository: DeviceGroupRepository,
     private val kontrollDeviceMappingService: KontrollDeviceMappingService,
 ) {
-    fun <T : KontrollEntity>saveToCache(entity: T) {
+    fun <T : KontrollEntity> saveToCache(entity: T) {
 
         when (entity) {
             is KontrollDevice -> saveKontrollDeviceToCache(entity)
@@ -24,15 +23,15 @@ class KontrollEntityService(
     }
 
     private fun saveKontrollDeviceToCache(entity: KontrollDevice) {
-        cacheService.put(entity.id.toString(),entity, KontrollDevice::class)
+        cacheService.put(entity.id.toString(), entity, KontrollDevice::class)
     }
 
     private fun saveKontrollDeviceGroupToCache(entity: KontrollDeviceGroup) {
-        cacheService.put(entity.id.toString(),entity, KontrollDeviceGroup::class)
+        cacheService.put(entity.id.toString(), entity, KontrollDeviceGroup::class)
     }
 
     private fun saveKontrollDeviceGroupMembershipToCache(entity: KontrollDeviceGroupMembership) {
-        cacheService.put("${entity.deviceGroupId}_${entity.deviceId}",entity, KontrollDeviceGroupMembership::class)
+        cacheService.put("${entity.deviceGroupId}_${entity.deviceId}", entity, KontrollDeviceGroupMembership::class)
     }
 
     fun findAllGroups(): List<KontrollDeviceGroup> {
@@ -45,15 +44,10 @@ class KontrollEntityService(
 
     fun findDeviceGroupByID(id: Long): KontrollDeviceGroup? {
         val deviceGroup = deviceGroupRepository.findByIdOrNull(id)
-        if (deviceGroup != null) {
-            return kontrollDeviceMappingService.mapDeviceGroupToKontrollDeviceGroup(deviceGroup)
+        return if (deviceGroup != null) {
+            kontrollDeviceMappingService.mapDeviceGroupToKontrollDeviceGroup(deviceGroup)
         } else {
-            return null
+            null
         }
     }
-
-
-
-
-
 }
