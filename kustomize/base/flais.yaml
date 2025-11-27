@@ -8,11 +8,11 @@ spec:
   image: ghcr.io/fintlabs/fint-kontroll-device-catalog:latest
   imagePullPolicy: Always
   url:
-    hostname: kontroll.novari.no
+    hostname: kontroll.vigo.no
     basePath: /beta/fintlabs-no
   ingress:
     enabled: true
-    basePath: /beta/fintlabs-no/api/
+    basePath: /beta/fintlabs-no/api
     middlewares:
       - fint-kontroll-sso
   kafka:
@@ -25,15 +25,16 @@ spec:
   database:
     database: fint-kontroll
   env:
-    - name: fint.client.base-url
-      value: 'https://api.felleskomponent.no'
-    - name: spring.kafka.consumer.group-id
-      value: 'fintlabs-no-fint-kontroll-device-catalog'
     - name: fint.kontroll.authorization.authorized-role
       value: "https://role-catalog.vigoiks.no/vigo/kontroll/user"
     - name: fint.kontroll.authorization.authorized-org-id
       value: "vigo.no"
-    - name: JAVA_TOOL_OPTIONS
-      value: "-XX:+ExitOnOutOfMemoryError -Xmx4800m"
+    - name: spring.kafka.consumer.group-id
+      value: 'fint-kontroll-device-catalog'
 
 
+  observability:
+    metrics:
+      enabled: true
+      port: "8080"
+      path: '/beta/fintlabs-no/actuator/prometheus'
