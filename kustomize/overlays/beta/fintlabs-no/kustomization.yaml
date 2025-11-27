@@ -33,13 +33,13 @@ patches:
         value: "fintlabs-no.kontroll.*"
       - op: replace
         path: "/spec/ingress/basePath"
-        value: "/fintlabs-no/api"
+        value: "/beta/fintlabs-no/api"
       - op: replace
         path: "/spec/url/hostname"
-        value: "kontroll.novari.no"
+        value: "/beta/kontroll.novari.no"
       - op: replace
         path: "/spec/url/basePath"
-        value: "/fintlabs-no"
+        value: "/beta/fintlabs-no"
       - op: add
         path: "/spec/resources"
         value:
