@@ -28,7 +28,7 @@ spec:
     - name: fint.client.base-url
       value: 'https://api.felleskomponent.no'
     - name: spring.kafka.consumer.group-id
-      value: 'fint-kontroll-device-catalog'
+      value: 'fintlabs-no-fint-kontroll-device-catalog'
     - name: fint.kontroll.authorization.authorized-role
       value: "https://role-catalog.vigoiks.no/vigo/kontroll/user"
     - name: fint.kontroll.authorization.authorized-org-id

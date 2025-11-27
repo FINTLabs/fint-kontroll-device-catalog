@@ -18,13 +18,13 @@ patches:
         value: "fintlabs.no"
       - op: replace
         path: "/spec/env/0/value"
-        value: "https://role-catalog.vigoiks.no/vigo/kontroll/user"
+        value: "https://api.felleskomponent.no"
       - op: replace
         path: "/spec/env/1/value"
-        value: "fintlabs.no"
+        value: "fintlabs-no-fint-kontroll-device-catalog"
       - op: replace
         path: "/spec/env/2/value"
-        value: "fintlabs-no-fint-kontroll-user-catalog"
+        value: "https://role-catalog.vigoiks.no/vigo/kontroll/user"
       - op: replace
         path: "/spec/kafka/acls/0/topic"
         value: "fintlabs-no.kontroll.*"
