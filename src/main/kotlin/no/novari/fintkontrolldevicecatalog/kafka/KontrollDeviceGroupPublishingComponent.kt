@@ -19,9 +19,8 @@ private val logger = LoggerFactory.getLogger(KontrollDeviceGroupPublishingCompon
 
 @Component
 class KontrollDeviceGroupPublishingComponent(
-    private val deviceCache: FintCache<String, KontrollDeviceGroup>,
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
-    private val entityTopicService: EntityTopicService
+    entityTopicService: EntityTopicService
 ) {
     private val parameterizedTemplate: ParameterizedTemplate<KontrollDeviceGroup> =
         parameterizedTemplateFactory.createTemplate(KontrollDeviceGroup::class.java)

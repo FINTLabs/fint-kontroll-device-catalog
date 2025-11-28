@@ -21,7 +21,7 @@ private val logger = LoggerFactory.getLogger(KontrollDevicePublishingComponent::
 @Component
 class KontrollDevicePublishingComponent(
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
-    private val entityTopicService: EntityTopicService
+    entityTopicService: EntityTopicService
 ) {
     private val parameterizedTemplate: ParameterizedTemplate<KontrollDevice> =
         parameterizedTemplateFactory.createTemplate(KontrollDevice::class.java)
