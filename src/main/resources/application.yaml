@@ -11,15 +11,16 @@ novari:
     defaultCacheEntryTimeToLive: "20000ms"
     defaultCacheHeapSize: 10000
 
-spring:
-  application:
-    name: fint-kontroll-device-catalog
   kafka:
     topic:
       org-id: fintlabs-no                 # TODO: MÅ BORT NÅR DEN REGISTRERES I KUSTOMIZE OVERLAY
       domain-context: kontroll
     application-id: fintlabs.no
     default-replicas: 1
+
+spring:
+  application:
+    name: fint-kontroll-device-catalog
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -35,6 +36,6 @@ logging:
     org.apache.kafka.clients.consumer: WARN
     org.apache.kafka.clients.producer: WARN
     org.springframework.kafka: WARN
-    no.fintlabs.kafka: WARN
-    no.fintlabs.cache.ehcache.FintEhCacheEventLogger: WARN
+    no.novari.kafka: WARN
+    no.novari.cache.ehcache.FintEhCacheEventLogger: WARN
 

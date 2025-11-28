@@ -32,7 +32,6 @@ spec:
     - name: spring.kafka.consumer.group-id
       value: 'fint-kontroll-device-catalog'
 
-
   observability:
     metrics:
       enabled: true
