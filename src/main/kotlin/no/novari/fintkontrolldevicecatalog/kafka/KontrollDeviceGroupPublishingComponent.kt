@@ -45,8 +45,7 @@ class KontrollDeviceGroupPublishingComponent(
         .build()
 
 
-    @PostConstruct
-    fun initTopic() {
+    init {
         entityTopicService.createOrModifyTopic(
             entityTopicNameParameters,
             entityTopicConfiguration()

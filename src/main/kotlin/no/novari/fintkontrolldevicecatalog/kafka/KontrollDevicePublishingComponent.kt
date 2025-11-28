@@ -20,7 +20,6 @@ private val logger = LoggerFactory.getLogger(KontrollDevicePublishingComponent::
 
 @Component
 class KontrollDevicePublishingComponent(
-    //private val deviceCache: FintCache<String, KontrollDevice>,
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
     private val entityTopicService: EntityTopicService
 ) {
@@ -46,33 +45,13 @@ class KontrollDevicePublishingComponent(
         .build()
 
 
-    @PostConstruct
-    fun initTopic(){
+     init{
         entityTopicService.createOrModifyTopic(
             entityTopicNameParameters,
             entityTopicConfiguration()
 
         )
     }
-
-//    @Scheduled(
-//        fixedDelayString = "\${fint.kontroll.publishing.fixed-delay:PT5M}",
-//        initialDelayString = "\${fint.kontroll.publishing.initial-delay:PT5M}"
-//    )
-//    fun publishAll() {
-//        val allKontrollDevices = deviceCache.getAll() //TODO: move to separate service
-//        val allKontrollDevicesToPublish = allKontrollDevices
-//            .mapNotNull { kontrollDevice ->
-//                val key = kontrollDevice.sourceId
-//                val cachedKontrollDevice = deviceCache.getOptional(key).orElse(null)
-//                if (cachedKontrollDevice != null || cachedKontrollDevice != kontrollDevice) kontrollDevice else null
-//            }
-//            .toList()
-//
-//        allKontrollDevicesToPublish.forEach { publishOne(it)}
-//
-//        logger.info("All Kontroll devices published")
-//    }
 
     fun publishOne(kontrollDevice: KontrollDevice) {
         val produserRecord = ParameterizedProducerRecord.builder<KontrollDevice>()
