@@ -1,18 +1,15 @@
 package no.novari.fintkontrolldevicecatalog.kafka
 
-import jakarta.annotation.PostConstruct
-import no.fintlabs.cache.FintCache
-import no.fintlabs.kafka.model.ParameterizedProducerRecord
-import no.fintlabs.kafka.producing.ParameterizedTemplate
-import no.fintlabs.kafka.producing.ParameterizedTemplateFactory
-import no.fintlabs.kafka.topic.EntityTopicService
-import no.fintlabs.kafka.topic.configuration.EntityCleanupFrequency
-import no.fintlabs.kafka.topic.configuration.EntityTopicConfiguration
-import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
-import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
+import no.novari.kafka.producing.ParameterizedTemplate
+import no.novari.kafka.producing.ParameterizedTemplateFactory
+import no.novari.kafka.topic.EntityTopicService
+import no.novari.kafka.topic.configuration.EntityCleanupFrequency
+import no.novari.kafka.topic.configuration.EntityTopicConfiguration
+import no.novari.kafka.topic.name.EntityTopicNameParameters
+import no.novari.kafka.topic.name.TopicNamePrefixParameters
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
+import no.novari.kafka.producing.ParameterizedProducerRecord
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.Duration
 
@@ -32,12 +29,14 @@ class KontrollDevicePublishingComponent(
         .build()
 
 
-    private fun topicNameParameters() = TopicNamePrefixParameters.builder()
+    private fun topicNameParameters() = TopicNamePrefixParameters
+        .stepBuilder()
         .orgIdApplicationDefault()
         .domainContextApplicationDefault()
         .build()
 
-    fun entityTopicConfiguration() = EntityTopicConfiguration.builder()
+    fun entityTopicConfiguration() = EntityTopicConfiguration
+        .stepBuilder()
         .partitions(1)
         .lastValueRetentionTime(Duration.ofDays(10))
         .nullValueRetentionTime(Duration.ZERO)

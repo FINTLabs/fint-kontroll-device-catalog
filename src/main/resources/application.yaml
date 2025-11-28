@@ -1,20 +1,22 @@
 fint:
   org-id: fintlabs.no
   application-id: fint-kontroll-device-catalog
-  cache:
-    defaultCacheEntryTimeToLiveMillis: 20000
-    defaultCacheHeapSize: 10000
   kontroll:
     publishing:
       initial-delay: 100000
       fixed-delay: 300000
+
+novari:
+  cache:
+    defaultCacheEntryTimeToLive: "20000ms"
+    defaultCacheHeapSize: 10000
 
 spring:
   application:
     name: fint-kontroll-device-catalog
   kafka:
     topic:
-      org-id: fintlabs-no
+      org-id: fintlabs-no                 # TODO: MÅ BORT NÅR DEN REGISTRERES I KUSTOMIZE OVERLAY
       domain-context: kontroll
     application-id: fintlabs.no
     default-replicas: 1

@@ -1,9 +1,9 @@
 package no.novari.fintkontrolldevicecatalog.kafka
 
-import no.fintlabs.kafka.consuming.ListenerConfiguration
-import no.fintlabs.kafka.consuming.ParameterizedListenerContainerFactoryService
-import no.fintlabs.kafka.topic.name.EntityTopicNameParameters
-import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters
+import no.novari.kafka.consuming.ListenerConfiguration
+import no.novari.kafka.consuming.ParameterizedListenerContainerFactoryService
+import no.novari.kafka.topic.name.EntityTopicNameParameters
+import no.novari.kafka.topic.name.TopicNamePrefixParameters
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
@@ -64,7 +64,8 @@ class KontrollDeviceConsumerConfiguration(
             .topicNamePrefixParameters(topicParams())
             .build()
 
-    private fun topicParams() = TopicNamePrefixParameters.builder()
+    private fun topicParams() = TopicNamePrefixParameters
+        .stepBuilder()
         .orgIdApplicationDefault()
         .domainContextApplicationDefault()
         .build()

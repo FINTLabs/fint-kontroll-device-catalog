@@ -2,7 +2,7 @@ package no.novari.fintkontrolldevicecatalog.service
 
 import org.springframework.stereotype.Service
 import kotlin.reflect.KClass
-import no.fintlabs.cache.FintCache
+import no.novari.cache.FintCache
 
 
 @Service
