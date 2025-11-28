@@ -1,5 +1,6 @@
 package no.novari.fintkontrolldevicecatalog.kafka
 
+import jakarta.annotation.PostConstruct
 import no.fintlabs.cache.FintCache
 import no.fintlabs.kafka.model.ParameterizedProducerRecord
 import no.fintlabs.kafka.producing.ParameterizedTemplate
@@ -21,7 +22,7 @@ private val logger = LoggerFactory.getLogger(KontrollDevicePublishingComponent::
 class KontrollDevicePublishingComponent(
     //private val deviceCache: FintCache<String, KontrollDevice>,
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
-    entityTopicService: EntityTopicService
+    private val entityTopicService: EntityTopicService
 ) {
     private val parameterizedTemplate: ParameterizedTemplate<KontrollDevice> =
         parameterizedTemplateFactory.createTemplate(KontrollDevice::class.java)
@@ -45,7 +46,8 @@ class KontrollDevicePublishingComponent(
         .build()
 
 
-    init {
+    @PostConstruct
+    fun initTopic(){
         entityTopicService.createOrModifyTopic(
             entityTopicNameParameters,
             entityTopicConfiguration()
