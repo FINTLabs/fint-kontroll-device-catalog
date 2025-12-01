@@ -63,7 +63,7 @@ class KontrollDeviceGroupMembershipPublishingComponent(
             .build()
 
         parameterizedTemplate.send(produserRecord)
-        logger.info("Published kontrolldevice with sourceId: ${kontrollDeviceGroupMembership.deviceGroupId}_${kontrollDeviceGroupMembership.deviceGroupId}")
+        logger.info("Published kontrolldevicemembership with sourceId: ${kontrollDeviceGroupMembership.deviceGroupId}_${kontrollDeviceGroupMembership.deviceGroupId}")
     }
 
 
