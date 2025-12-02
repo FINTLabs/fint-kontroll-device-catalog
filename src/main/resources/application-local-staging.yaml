@@ -39,13 +39,17 @@ spring:
   kafka:
     consumer:
       group-id: fint-kontroll-device-catalog
-
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         default_schema: device
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.felleskomponent.no/nidp/oauth/nam
 
   flyway:
     enabled: true
