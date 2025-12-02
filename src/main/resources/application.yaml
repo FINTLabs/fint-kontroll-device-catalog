@@ -5,8 +5,8 @@ fint:
     publishing:
       initial-delay: 100000
       fixed-delay: 300000
-#    opa:
-#      url: http://localhost:8181/v1/data/accessmanagement
+    opa:
+      url: http://fint-kontroll-opa:8181/v1/data/accessmanagement
     authorization:
       authorized-role: https://role-catalog.vigoiks.no/vigo/kontroll/user
       authorized-org-id: vigo.no
