@@ -21,6 +21,11 @@ novari:
 spring:
   application:
     name: fint-kontroll-device-catalog
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.felleskomponent.no/nidp/oauth/nam
   flyway:
     enabled: true
     locations: classpath:db/migration
