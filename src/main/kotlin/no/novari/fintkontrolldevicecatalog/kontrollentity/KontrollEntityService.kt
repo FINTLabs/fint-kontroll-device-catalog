@@ -1,7 +1,9 @@
 package no.novari.fintkontrolldevicecatalog.kontrollentity
 
-import no.novari.fintkontrolldevicecatalog.entity.DeviceGroup
+import no.novari.fintkontrolldevicecatalog.entity.Device
+import no.novari.fintkontrolldevicecatalog.entity.DeviceGroupMembershipRepository
 import no.novari.fintkontrolldevicecatalog.entity.DeviceGroupRepository
+import no.novari.fintkontrolldevicecatalog.entity.DeviceRepository
 import no.novari.fintkontrolldevicecatalog.service.CacheService
 import no.novari.fintkontrolldevicecatalog.service.KontrollDeviceMappingService
 import org.springframework.data.repository.findByIdOrNull
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service
 @Service
 class KontrollEntityService(
     private val cacheService: CacheService,
+    private val deviceRepository: DeviceRepository,
     private val deviceGroupRepository: DeviceGroupRepository,
+    private val deviceGroupMembershipRepository: DeviceGroupMembershipRepository,
     private val kontrollDeviceMappingService: KontrollDeviceMappingService,
 ) {
     fun <T : KontrollEntity> saveToCache(entity: T) {
@@ -50,4 +54,26 @@ class KontrollEntityService(
             null
         }
     }
+
+    fun findAllDevices(): List<KontrollDevice> {
+        val devices = deviceRepository.findAll()
+
+        return devices.mapNotNull { device -> kontrollDeviceMappingService.mapDeviceToKontrollDevice(device)
+        }.toList()
+    }
+
+    fun findDeviceById(id: Long): KontrollDevice? {
+        val device = deviceRepository.findByIdOrNull(id)
+
+        return device?.let { kontrollDeviceMappingService.mapDeviceToKontrollDevice(it) }
+    }
+
+    fun findDevicesInDeviceGroupByDeviceGroupId(id: Long): List<KontrollDevice> {
+        val devices: List<Device> = deviceGroupMembershipRepository.getDevicesInDeviceGroupByDeviceGroupId(id)
+
+        return devices.map { device ->
+            kontrollDeviceMappingService.mapDeviceToKontrollDevice(device) }
+    }
+
+
 }

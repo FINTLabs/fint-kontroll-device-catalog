@@ -22,6 +22,18 @@ class KontrollEntityController(
     fun getDeviceGroupByID(@PathVariable id: Long): ResponseEntity<KontrollDeviceGroup> =
         kontrollEntityService.findDeviceGroupByID(id).toResponseEntity()
 
+    @GetMapping("/devices")
+    fun getKontrollDevices() = kontrollEntityService.findAllDevices()
+
+    @GetMapping("/devices/{id}")
+    fun getDeviceById(@PathVariable id: Long): ResponseEntity<KontrollDevice> =
+        kontrollEntityService.findDeviceById(id).toResponseEntity()
+
+    @GetMapping("/devicegroups/{id}/members")
+    fun getDeviceGroupMembershipsByDeviceGroupId(@PathVariable id: Long): List<KontrollDevice>  =
+        kontrollEntityService.findDevicesInDeviceGroupByDeviceGroupId(id)
+
+
 
 
 
