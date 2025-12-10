@@ -1,13 +1,13 @@
 package no.novari.fintkontrolldevicecatalog.entity
 
-import no.novari.fintkontrolldevicecatalog.service.DevicePersistenceService
+import no.novari.fintkontrolldevicecatalog.service.EntityPersistenceService
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
 class DeviceGroupMembershipRetryScheduler(
     private val deviceGroupMembershipRetryBuffer: DeviceGroupMembershipRetryBuffer,
-    private val devicePersistenceService: DevicePersistenceService
+    private val entityPersistenceService: EntityPersistenceService
 ) {
 
     @Scheduled(fixedDelay = 10000)
@@ -20,7 +20,7 @@ class DeviceGroupMembershipRetryScheduler(
 
         membershipsToRetry.forEach { membership ->
             try {
-                devicePersistenceService.handle(membership)
+                entityPersistenceService.handle(membership)
             } catch (e: Exception) {
                 println("Retry failed for ${membership.deviceId}_${membership.groupId}: ${e.message}")
                 deviceGroupMembershipRetryBuffer.add(membership)

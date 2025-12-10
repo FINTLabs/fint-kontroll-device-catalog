@@ -52,6 +52,13 @@ class KontrollDevicePublishingComponent(
         )
     }
 
+    fun publishAll(devices: List<KontrollDevice>) {
+        devices.forEach {
+            //TODO: add logic for status or put in in publishOne
+            publishOne(it)
+        }
+    }
+
     fun publishOne(kontrollDevice: KontrollDevice) {
         val produserRecord = ParameterizedProducerRecord.builder<KontrollDevice>()
             .topicNameParameters(entityTopicNameParameters)
@@ -62,7 +69,6 @@ class KontrollDevicePublishingComponent(
         parameterizedTemplate.send(produserRecord)
         logger.info("Published kontrolldevice with sourceId: ${kontrollDevice.sourceId} and name: ${kontrollDevice.name}")
     }
-
 
 }
 

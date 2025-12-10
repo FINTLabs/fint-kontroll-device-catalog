@@ -11,13 +11,13 @@ import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMem
 import org.springframework.stereotype.Service
 
 @Service
-class DevicePersistenceService(
+class EntityPersistenceService(
     private val deviceRepository: DeviceRepository,
     private val deviceGroupRepository: DeviceGroupRepository,
     private val deviceGroupMembershipRepository: DeviceGroupMembershipRepository,
-    private val deviceMappingService: DeviceMappingService,
+    private val entityMappingService: EntityMappingService,
     private val deviceGroupMembershipRetryBuffer: DeviceGroupMembershipRetryBuffer,
-    private val kontrollDeviceMappingService: KontrollDeviceMappingService,
+    private val kontrollEntityMappingService: KontrollEntityMappingService,
     private val kontrollDevicePublishingComponent: KontrollDevicePublishingComponent,
     private val kontrollDeviceGroupPublishingComponent: KontrollDeviceGroupPublishingComponent,
     private val kontrollDeviceGroupMembershipPublishingComponent: KontrollDeviceGroupMembershipPublishingComponent
@@ -34,17 +34,17 @@ class DevicePersistenceService(
 
     private fun handleDevice(kafka: KafkaDevice) {
         val existing = deviceRepository.findBySourceId(kafka.systemId)
-        val mapped = deviceMappingService.mapKafkaDeviceToDevice(kafka, existing)
+        val mapped = entityMappingService.mapKafkaDeviceToDevice(kafka, existing)
         val savedDevice: Device = deviceRepository.save(mapped)
-        val kontrollDevice: KontrollDevice = kontrollDeviceMappingService.mapDeviceToKontrollDevice(savedDevice)
+        val kontrollDevice: KontrollDevice = kontrollEntityMappingService.mapDeviceToKontrollDevice(savedDevice)
         kontrollDevicePublishingComponent.publishOne(kontrollDevice)
     }
 
     private fun handleDeviceGroup(kafka: KafkaDeviceGroup) {
         val existing = deviceGroupRepository.findBySourceId(kafka.systemId)
-        val mapped = deviceMappingService.mapKafkaDeviceGroupToDeviceGroup(kafka, existing)
+        val mapped = entityMappingService.mapKafkaDeviceGroupToDeviceGroup(kafka, existing)
         val savedDeviceGroup: DeviceGroup = deviceGroupRepository.save(mapped)
-        val kontrollDeviceGroup: KontrollDeviceGroup = kontrollDeviceMappingService.mapDeviceGroupToKontrollDeviceGroup(savedDeviceGroup)
+        val kontrollDeviceGroup: KontrollDeviceGroup = kontrollEntityMappingService.mapDeviceGroupToKontrollDeviceGroup(savedDeviceGroup)
         kontrollDeviceGroupPublishingComponent.publishOne(kontrollDeviceGroup)
     }
 
@@ -65,7 +65,7 @@ class DevicePersistenceService(
 
         val existing = deviceGroupMembershipRepository.findById(id).orElse(null)
 
-        val mapped = deviceMappingService.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
+        val mapped = entityMappingService.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
             kafkaDeviceGroupMembership = kafkaDeviceGroupMembership,
             device = device,
             group = group,
@@ -74,7 +74,7 @@ class DevicePersistenceService(
 
         val savedDeviceGroupMembership = deviceGroupMembershipRepository.save(mapped)
         val kontrollDeviceGroupMembership: KontrollDeviceGroupMembership =
-            kontrollDeviceMappingService.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(savedDeviceGroupMembership)
+            kontrollEntityMappingService.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(savedDeviceGroupMembership)
         kontrollDeviceGroupMembershipPublishingComponent.publishOne(kontrollDeviceGroupMembership)
     }
 }

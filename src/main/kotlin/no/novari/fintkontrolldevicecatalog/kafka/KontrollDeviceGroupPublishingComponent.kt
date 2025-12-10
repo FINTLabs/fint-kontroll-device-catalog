@@ -1,5 +1,6 @@
 package no.novari.fintkontrolldevicecatalog.kafka
 
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import no.novari.kafka.producing.ParameterizedTemplate
 import no.novari.kafka.producing.ParameterizedTemplateFactory
 import no.novari.kafka.topic.EntityTopicService
@@ -8,6 +9,7 @@ import no.novari.kafka.topic.configuration.EntityTopicConfiguration
 import no.novari.kafka.topic.name.EntityTopicNameParameters
 import no.novari.kafka.topic.name.TopicNamePrefixParameters
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
 import no.novari.kafka.producing.ParameterizedProducerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -52,6 +54,13 @@ class KontrollDeviceGroupPublishingComponent(
         )
     }
 
+    fun publishAll(devicegroups: List<KontrollDeviceGroup>) {
+        devicegroups.forEach {
+            //TODO: all logic for status or put it in publishOne
+            publishOne(it)
+        }
+    }
+
     fun publishOne(kontrollDeviceGroup: KontrollDeviceGroup) {
         val produserRecord = ParameterizedProducerRecord.builder<KontrollDeviceGroup>()
             .topicNameParameters(entityTopicNameParameters)
@@ -62,6 +71,8 @@ class KontrollDeviceGroupPublishingComponent(
         parameterizedTemplate.send(produserRecord)
         logger.info("Published kontrolldevicegroup with sourceId: ${kontrollDeviceGroup.sourceId} and name: ${kontrollDeviceGroup.name}")
     }
+
+
 
 
 }

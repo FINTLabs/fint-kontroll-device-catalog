@@ -8,7 +8,7 @@ import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDevice
 import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroupMembership
 import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaEntity
-import no.novari.fintkontrolldevicecatalog.service.DevicePersistenceService
+import no.novari.fintkontrolldevicecatalog.service.EntityPersistenceService
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
 
 @Configuration
 class DeviceConsumerConfiguration(
-    private val devicePersistenceService: DevicePersistenceService,
+    private val entityPersistenceService: EntityPersistenceService,
     private val parameterizedListenerContainerFactoryService: ParameterizedListenerContainerFactoryService,
     private val kafkaCommonErrorHandler: CommonErrorHandler
 ) {
@@ -43,7 +43,7 @@ class DeviceConsumerConfiguration(
         val factory = parameterizedListenerContainerFactoryService.createRecordListenerContainerFactory(
             mappedClass.java,
             { consumerRecord: ConsumerRecord<String, T> ->
-                devicePersistenceService.handle(consumerRecord.value())
+                entityPersistenceService.handle(consumerRecord.value())
 
             },
             listenerConfiguration(),

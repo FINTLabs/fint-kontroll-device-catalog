@@ -9,10 +9,10 @@ import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMem
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
-private val logger = LoggerFactory.getLogger(KontrollDeviceMappingService::class.java)
+private val logger = LoggerFactory.getLogger(KontrollEntityMappingService::class.java)
 
 @Service
-class KontrollDeviceMappingService {
+class KontrollEntityMappingService {
 
     fun mapDeviceToKontrollDevice(
         device: Device,

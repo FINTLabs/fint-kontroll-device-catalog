@@ -55,6 +55,14 @@ class KontrollDeviceGroupMembershipPublishingComponent(
         )
     }
 
+    fun publishAll(deviceGroupMembership: List<KontrollDeviceGroupMembership>) {
+        deviceGroupMembership.forEach {
+            //TODO: add logic for status or put it in publishOne
+            publishOne(it)
+        }
+
+    }
+
     fun publishOne(kontrollDeviceGroupMembership: KontrollDeviceGroupMembership) {
         val produserRecord = ParameterizedProducerRecord.builder<KontrollDeviceGroupMembership>()
             .topicNameParameters(entityTopicNameParameters)
@@ -65,6 +73,8 @@ class KontrollDeviceGroupMembershipPublishingComponent(
         parameterizedTemplate.send(produserRecord)
         logger.info("Published kontrolldevicemembership with sourceId: ${kontrollDeviceGroupMembership.deviceGroupId}_${kontrollDeviceGroupMembership.deviceGroupId}")
     }
+
+
 
 
 }
