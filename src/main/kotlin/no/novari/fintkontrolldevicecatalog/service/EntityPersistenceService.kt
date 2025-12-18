@@ -8,7 +8,10 @@ import no.novari.fintkontrolldevicecatalog.kaftaentity.*
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+
+private val logger = LoggerFactory.getLogger("EntityPersistenceService")
 
 @Service
 class EntityPersistenceService(
@@ -32,10 +35,10 @@ class EntityPersistenceService(
         }
     }
 
-    private fun handleDevice(kafka: KafkaDevice) {
-        val existing = deviceRepository.findBySourceId(kafka.systemId)
-        val mapped = entityMappingService.mapKafkaDeviceToDevice(kafka, existing)
-        val savedDevice: Device = deviceRepository.save(mapped)
+    private fun handleDevice(kafkaDevice: KafkaDevice) {
+        val existingDevice = deviceRepository.findBySourceId(kafkaDevice.systemId)
+        val mappedDevice = entityMappingService.mapKafkaDeviceToDevice(kafkaDevice, existingDevice)
+        val savedDevice: Device = deviceRepository.save(mappedDevice)
         val kontrollDevice: KontrollDevice = kontrollEntityMappingService.mapDeviceToKontrollDevice(savedDevice)
         kontrollDevicePublishingComponent.publishOne(kontrollDevice)
     }
