@@ -13,6 +13,7 @@ data class DeviceGroup (
     val orgUnitId: String?,
     val platform: String,
     val deviceType: String,
+    val noOfMembers: Long = 0,
 
     @JsonIgnore
     @Transient

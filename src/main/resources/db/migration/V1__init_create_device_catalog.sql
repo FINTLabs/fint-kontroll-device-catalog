@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS device_groups (
                                              name        VARCHAR(255) NOT NULL,
                                              org_unit_id VARCHAR(255),
                                              platform    VARCHAR(100) NOT NULL,
-                                             device_type VARCHAR(100) NOT NULL
+                                             device_type VARCHAR(100) NOT NULL,
+                                             no_of_members BIGINT
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS ux_device_groups_source_id ON device_groups(source_id);
