@@ -2,8 +2,11 @@ package no.novari.fintkontrolldevicecatalog.service
 
 import no.novari.fintkontrolldevicecatalog.entity.*
 import no.novari.fintkontrolldevicecatalog.kaftaentity.*
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
+
+private val logger = LoggerFactory.getLogger("EntityMappingService")
 
 @Service
 class EntityMappingService {
@@ -12,7 +15,7 @@ class EntityMappingService {
         kafkaDevice: KafkaDevice,
         existing: Device? = null
     ): Device {
-        println("Mapping KafkaDevice to Device: systemId=${kafkaDevice.systemId}, platform=${kafkaDevice.platform}")
+        logger.info("Mapping KafkaDevice to Device: systemId=${kafkaDevice.systemId}, platform=${kafkaDevice.platform}")
 
         val base = existing ?: Device(
             sourceId = kafkaDevice.systemId,
@@ -54,7 +57,7 @@ class EntityMappingService {
         kafkaDeviceGroup: KafkaDeviceGroup,
         existing: DeviceGroup? = null
     ): DeviceGroup {
-        println("Mapping KafkaDeviceGroup to DeviceGroup: systemId=${kafkaDeviceGroup.systemId}, name=${kafkaDeviceGroup.name}")
+        logger.info("Mapping KafkaDeviceGroup to DeviceGroup: systemId=${kafkaDeviceGroup.systemId}, name=${kafkaDeviceGroup.name}")
 
         val base = existing ?: DeviceGroup(
             sourceId = kafkaDeviceGroup.systemId,
@@ -81,7 +84,7 @@ class EntityMappingService {
         group: DeviceGroup,
         existing: DeviceGroupMembership? = null
     ): DeviceGroupMembership {
-        println("Mapping KafkaDeviceGroupMembership: groupId=${kafkaDeviceGroupMembership.groupId}, deviceId=${kafkaDeviceGroupMembership.deviceId}")
+        logger.info("Mapping KafkaDeviceGroupMembership: groupId=${kafkaDeviceGroupMembership.groupId}, deviceId=${kafkaDeviceGroupMembership.deviceId}")
 
         val id = existing?.id ?: DeviceGroupMembershipId(
             deviceGroupId = group.id!!,
