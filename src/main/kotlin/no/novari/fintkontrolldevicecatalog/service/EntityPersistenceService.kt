@@ -61,7 +61,7 @@ class EntityPersistenceService(
     }
 
     private fun handleDeviceGroupMembership(kafkaDeviceGroupMembership: KafkaDeviceGroupMembership) {
-        println("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
+        logger.debug("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
         val group = deviceGroupRepository.findBySourceId(kafkaDeviceGroupMembership.groupId)
         val device = deviceRepository.findBySourceId(kafkaDeviceGroupMembership.deviceId)
 

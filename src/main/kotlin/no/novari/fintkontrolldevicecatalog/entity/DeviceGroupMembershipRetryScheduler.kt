@@ -1,8 +1,11 @@
 package no.novari.fintkontrolldevicecatalog.entity
 
 import no.novari.fintkontrolldevicecatalog.service.EntityPersistenceService
+import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+
+private val logger = LoggerFactory.getLogger("DeviceGroupMembershipRetryScheduler")
 
 @Component
 class DeviceGroupMembershipRetryScheduler(
@@ -15,14 +18,14 @@ class DeviceGroupMembershipRetryScheduler(
         val membershipsToRetry = deviceGroupMembershipRetryBuffer.drain()
 
         if (membershipsToRetry.isNotEmpty()) {
-            println("Retrying ${membershipsToRetry.size} buffered memberships...")
+            logger.info("Retrying ${membershipsToRetry.size} buffered memberships...")
         }
 
         membershipsToRetry.forEach { membership ->
             try {
                 entityPersistenceService.handle(membership)
             } catch (e: Exception) {
-                println("Retry failed for ${membership.deviceId}_${membership.groupId}: ${e.message}")
+                logger.info("Retry failed for ${membership.deviceId}_${membership.groupId}: ${e.message}")
                 deviceGroupMembershipRetryBuffer.add(membership)
             }
         }

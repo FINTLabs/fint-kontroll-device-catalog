@@ -1,16 +1,19 @@
 package no.novari.fintkontrolldevicecatalog.entity
 
 import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroupMembership
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
+
+private val logger = LoggerFactory.getLogger("DeviceGroupMembershipRetryBuffer")
 
 @Component
 class DeviceGroupMembershipRetryBuffer {
     private val buffer: Queue<KafkaDeviceGroupMembership> = ConcurrentLinkedQueue()
 
     fun add(membership: KafkaDeviceGroupMembership) {
-        println("Buffered membership for retry: ${membership.deviceId}_${membership.groupId}")
+        logger.info("Buffered membership for retry: ${membership.deviceId}_${membership.groupId}")
         buffer.add(membership)
     }
 
