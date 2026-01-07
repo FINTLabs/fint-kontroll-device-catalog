@@ -9,8 +9,6 @@ import no.novari.cache.FintCache
 class CacheService(
     private val cacheMap: Map<KClass<*>, FintCache<String, *>>
 ) {
-
-
     fun <T : Any> put(key: String?, value: T, type: KClass<T>) {
         if (key == null) return
 
@@ -18,6 +16,5 @@ class CacheService(
             ?: throw IllegalArgumentException("No cache configured for type: ${type.simpleName}")
 
         cache.put(key, value)
-        println("$key $value")
     }
 }

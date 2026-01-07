@@ -4,7 +4,10 @@ import no.novari.fintkontrolldevicecatalog.entity.*
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupMembershipPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDevicePublishingComponent
-import no.novari.fintkontrolldevicecatalog.kaftaentity.*
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDevice
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroup
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaDeviceGroupMembership
+import no.novari.fintkontrolldevicecatalog.kaftaentity.KafkaEntity
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDevice
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
@@ -47,12 +50,18 @@ class EntityPersistenceService(
         val existing = deviceGroupRepository.findBySourceId(kafka.systemId)
         val mapped = entityMappingService.mapKafkaDeviceGroupToDeviceGroup(kafka, existing)
         val savedDeviceGroup: DeviceGroup = deviceGroupRepository.save(mapped)
-        val kontrollDeviceGroup: KontrollDeviceGroup = kontrollEntityMappingService.mapDeviceGroupToKontrollDeviceGroup(savedDeviceGroup)
+        publishDeviceGroup(savedDeviceGroup)
+    }
+
+    private fun publishDeviceGroup(deviceGroup: DeviceGroup) {
+        val kontrollDeviceGroup: KontrollDeviceGroup =
+            kontrollEntityMappingService.mapDeviceGroupToKontrollDeviceGroup(deviceGroup)
+        deviceGroupRepository.syncNoOfMembers(kontrollDeviceGroup.id)
         kontrollDeviceGroupPublishingComponent.publishOne(kontrollDeviceGroup)
     }
 
     private fun handleDeviceGroupMembership(kafkaDeviceGroupMembership: KafkaDeviceGroupMembership) {
-        println("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
+        logger.debug("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
         val group = deviceGroupRepository.findBySourceId(kafkaDeviceGroupMembership.groupId)
         val device = deviceRepository.findBySourceId(kafkaDeviceGroupMembership.deviceId)
 
@@ -77,7 +86,10 @@ class EntityPersistenceService(
 
         val savedDeviceGroupMembership = deviceGroupMembershipRepository.save(mapped)
         val kontrollDeviceGroupMembership: KontrollDeviceGroupMembership =
-            kontrollEntityMappingService.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(savedDeviceGroupMembership)
+            kontrollEntityMappingService.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(
+                savedDeviceGroupMembership
+            )
         kontrollDeviceGroupMembershipPublishingComponent.publishOne(kontrollDeviceGroupMembership)
+        publishDeviceGroup(group)
     }
 }
