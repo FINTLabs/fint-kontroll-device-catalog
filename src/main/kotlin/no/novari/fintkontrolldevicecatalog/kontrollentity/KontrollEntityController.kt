@@ -5,17 +5,14 @@ import no.fintlabs.util.OnlyDevelopers
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupMembershipPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDevicePublishingComponent
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntityControllerResponse.pageResponse
+import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntityControllerResponse.toPage
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import kotlin.Int
-import kotlin.collections.drop
-import kotlin.collections.take
 
 
 private val logger = LoggerFactory.getLogger(KontrollEntityController::class.java)
@@ -28,6 +25,8 @@ class KontrollEntityController(
     val kontrollDevicePublishingComponent: KontrollDevicePublishingComponent,
     val kontrollDeviceGroupMembershipPublishingComponent: KontrollDeviceGroupMembershipPublishingComponent
 ) {
+    private val responseUtils = KontrollEntityControllerResponse
+
 
     @GetMapping("/devicegroups")
     fun getKontrollDeviceGroups(
@@ -36,13 +35,14 @@ class KontrollEntityController(
     ): ResponseEntity<Map<String, Any?>> {
         val allGroups: List<KontrollDeviceGroup> = kontrollEntityService.findAllGroups()
 
-        return pageResponse(toPage(allGroups, PageRequest.of(
+        return responseUtils.pageResponse(toPage(allGroups, PageRequest.of(
             page,size)), itemKey = "deviceGroups")
     }
 
     @GetMapping("/devicegroups/{id}")
     fun getDeviceGroupByID(@PathVariable id: Long): ResponseEntity<KontrollDeviceGroup> =
-        kontrollEntityService.findDeviceGroupByID(id).toResponseEntity()
+        responseUtils.toResponseEntity( kontrollEntityService.findDeviceGroupByID(id))
+
 
     @GetMapping("/devices")
     fun getKontrollDevices(
@@ -57,7 +57,7 @@ class KontrollEntityController(
 
     @GetMapping("/devices/{id}")
     fun getDeviceById(@PathVariable id: Long): ResponseEntity<KontrollDevice> =
-        kontrollEntityService.findDeviceById(id).toResponseEntity()
+        responseUtils.toResponseEntity(kontrollEntityService.findDeviceById(id))
 
     @GetMapping("/devicegroups/{id}/members")
     fun getDeviceGroupMembershipsByDeviceGroupId(
@@ -69,29 +69,6 @@ class KontrollEntityController(
 
         return pageResponse(toPage(allMembers, PageRequest.of(page, size)), itemKey = "members")
     }
-
-
-    private fun <T> toPage(response: List<T>, paging: Pageable): Page<T> =
-        PageImpl(response.drop(paging.offset.toInt()).take(paging.pageSize),
-            paging,response.size.toLong())
-
-    private fun <T> pageResponse(
-        page: Page<T>,
-        itemKey: String
-    ) : ResponseEntity<Map<String, Any?>> =
-        ResponseEntity.ok(
-            mapOf(
-                itemKey to page.content,
-                "currentPage" to page.number,
-                "totalPages" to page.totalPages,
-                "totalItems" to page.totalElements,
-                "itemsInPage" to page.numberOfElements
-            )
-        )
-
-    private fun <T : Any> T?.toResponseEntity(): ResponseEntity<T> =
-        this?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
-
 
     @OnlyDevelopers
     @PostMapping("/devicegroups/publishAllDeviceGroupsDevicesMembership")
