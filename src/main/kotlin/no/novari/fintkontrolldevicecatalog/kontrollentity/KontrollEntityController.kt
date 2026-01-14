@@ -2,13 +2,18 @@ package no.novari.fintkontrolldevicecatalog.kontrollentity
 
 
 import no.fintlabs.util.OnlyDevelopers
+import no.novari.fintkontrolldevicecatalog.entity.DeviceGroup
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupMembershipPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDevicePublishingComponent
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntityControllerResponse.pageResponse
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollEntityControllerResponse.toPage
 import org.slf4j.LoggerFactory
+import org.springdoc.core.annotations.ParameterObject
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -32,11 +37,11 @@ class KontrollEntityController(
     fun getKontrollDeviceGroups(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam (defaultValue = "20") size: Int,
+        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable
     ): ResponseEntity<Map<String, Any?>> {
-        val allGroups: List<KontrollDeviceGroup> = kontrollEntityService.findAllGroups()
+        val allGroupsPaged : Page<DeviceGroup> = kontrollEntityService.findAllGroupsPaged(pageRequest)
 
-        return responseUtils.pageResponse(toPage(allGroups, PageRequest.of(
-            page,size)), itemKey = "deviceGroups")
+        return responseUtils.pageResponse(allGroupsPaged, itemKey = "deviceGroups")
     }
 
     @GetMapping("/devicegroups/{id}")

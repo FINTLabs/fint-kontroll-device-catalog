@@ -1,11 +1,15 @@
 package no.novari.fintkontrolldevicecatalog.kontrollentity
 
 import no.novari.fintkontrolldevicecatalog.entity.Device
+import no.novari.fintkontrolldevicecatalog.entity.DeviceGroup
 import no.novari.fintkontrolldevicecatalog.entity.DeviceGroupMembershipRepository
 import no.novari.fintkontrolldevicecatalog.entity.DeviceGroupRepository
 import no.novari.fintkontrolldevicecatalog.entity.DeviceRepository
 import no.novari.fintkontrolldevicecatalog.service.CacheService
 import no.novari.fintkontrolldevicecatalog.service.KontrollEntityMappingService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -81,6 +85,11 @@ class KontrollEntityService(
         return deviceGroupMemberships.mapNotNull { deviceGroupMembership ->
             kontrollEntityMappingService.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(deviceGroupMembership)
         }.toList()
+    }
+
+    fun findAllGroupsPaged(pageRequest: Pageable): Page<DeviceGroup> {
+
+        return deviceGroupRepository.findAll(pageRequest)
     }
 
 

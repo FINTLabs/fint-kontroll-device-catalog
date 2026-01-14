@@ -24,6 +24,7 @@ data class KontrollDeviceGroup(
     val sourceId: String,
     val name: String,
     val orgUnitId: String?,
+    val orgUnitName: String?,
     val platform: String,
     val deviceType: String,
 ) : KontrollEntity

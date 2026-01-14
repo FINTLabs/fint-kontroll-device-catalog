@@ -63,6 +63,7 @@ class EntityMappingService {
             sourceId = kafkaDeviceGroup.systemId,
             name = kafkaDeviceGroup.name,
             orgUnitId = kafkaDeviceGroup.orgUnitId,
+            orgUnitName = kafkaDeviceGroup.orgUnitName,
             platform = kafkaDeviceGroup.platform,
             deviceType = kafkaDeviceGroup.deviceType,
             memberships = mutableSetOf()

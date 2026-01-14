@@ -98,6 +98,7 @@ class KontrollEntityMappingServiceTest {
             sourceId = "grp-1",
             name = "Group A",
             orgUnitId = "ou-1",
+            orgUnitName = "ou-1",
             platform = "FINT",
             deviceType = "LAPTOP",
             memberships = mutableSetOf()
@@ -120,6 +121,7 @@ class KontrollEntityMappingServiceTest {
             sourceId = "grp-1",
             name = "Group A",
             orgUnitId = "ou-1",
+            orgUnitName = "ou-1",
             platform = "FINT",
             deviceType = "LAPTOP",
             memberships = mutableSetOf()
@@ -155,6 +157,7 @@ class KontrollEntityMappingServiceTest {
             sourceId = "grp-1",
             name = "Group",
             orgUnitId = "ou",
+            orgUnitName = "ou-1",
             platform = "FINT",
             deviceType = "TYPE",
             memberships = mutableSetOf()
@@ -199,6 +202,7 @@ class KontrollEntityMappingServiceTest {
             sourceId = "grp-1",
             name = "Group",
             orgUnitId = "ou",
+            orgUnitName = "ou-1",
             platform = "FINT",
             deviceType = "TYPE",
             memberships = mutableSetOf()
