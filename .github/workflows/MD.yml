@@ -10,7 +10,7 @@ on:
         type: choice
         options:
           - aks-beta-fint-2021-11-23
-#          - aks-api-fint-2022-02-08
+          - aks-api-fint-2022-02-08
       org:
         description: 'Select organisation'
         required: true
