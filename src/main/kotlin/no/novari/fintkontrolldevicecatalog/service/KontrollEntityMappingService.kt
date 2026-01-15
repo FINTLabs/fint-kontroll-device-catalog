@@ -44,6 +44,7 @@ class KontrollEntityMappingService {
             sourceId = deviceGroup.sourceId,
             name = deviceGroup.name,
             orgUnitId = deviceGroup.orgUnitId,
+            orgUnitName = deviceGroup.orgUnitName,
             platform = deviceGroup.platform,
             deviceType = deviceGroup.deviceType
         )

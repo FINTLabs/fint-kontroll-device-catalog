@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS device_groups (
                                              source_id   VARCHAR(255) NOT NULL,
                                              name        VARCHAR(255) NOT NULL,
                                              org_unit_id VARCHAR(255),
+                                             org_unit_name VARCHAR(255),
                                              platform    VARCHAR(100) NOT NULL,
                                              device_type VARCHAR(100) NOT NULL,
                                              no_of_members BIGINT
