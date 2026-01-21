@@ -3,7 +3,7 @@ package no.novari.fintkontrolldevicecatalog.kaftaentity
 sealed interface KafkaEntity
 
 data class KafkaDevice(
-    val systemId: String,
+    val sourceId: String,
     val serialNumber: String,
     val dataObjectId: String?,
     val name: String?,
@@ -17,7 +17,7 @@ data class KafkaDevice(
 ) : KafkaEntity
 
 data class KafkaDeviceGroup(
-    val systemId: String,
+    val sourceId: String,
     val name: String,
     val orgUnitId: String?,
     val orgUnitName: String?,
@@ -26,7 +26,8 @@ data class KafkaDeviceGroup(
 ) : KafkaEntity
 
 data class KafkaDeviceGroupMembership(
-    val groupId: String,
+    val sourceId: String,
+    val deviceGroupId: String,
     val deviceId: String
 ) : KafkaEntity
 

@@ -15,10 +15,10 @@ class EntityMappingService {
         kafkaDevice: KafkaDevice,
         existing: Device? = null
     ): Device {
-        logger.info("Mapping KafkaDevice to Device: systemId=${kafkaDevice.systemId}, platform=${kafkaDevice.platform}")
+        logger.info("Mapping KafkaDevice to Device: systemId=${kafkaDevice.sourceId}, platform=${kafkaDevice.platform}")
 
         val base = existing ?: Device(
-            sourceId = kafkaDevice.systemId,
+            sourceId = kafkaDevice.sourceId,
             serialNumber = kafkaDevice.serialNumber,
             dataObjectId = kafkaDevice.dataObjectId,
             name = kafkaDevice.name,
@@ -57,10 +57,10 @@ class EntityMappingService {
         kafkaDeviceGroup: KafkaDeviceGroup,
         existing: DeviceGroup? = null
     ): DeviceGroup {
-        logger.info("Mapping KafkaDeviceGroup to DeviceGroup: systemId=${kafkaDeviceGroup.systemId}, name=${kafkaDeviceGroup.name}")
+        logger.info("Mapping KafkaDeviceGroup to DeviceGroup: systemId=${kafkaDeviceGroup.sourceId}, name=${kafkaDeviceGroup.name}")
 
         val base = existing ?: DeviceGroup(
-            sourceId = kafkaDeviceGroup.systemId,
+            sourceId = kafkaDeviceGroup.sourceId,
             name = kafkaDeviceGroup.name,
             orgUnitId = kafkaDeviceGroup.orgUnitId,
             orgUnitName = kafkaDeviceGroup.orgUnitName,
@@ -85,7 +85,7 @@ class EntityMappingService {
         group: DeviceGroup,
         existing: DeviceGroupMembership? = null
     ): DeviceGroupMembership {
-        logger.info("Mapping KafkaDeviceGroupMembership: groupId=${kafkaDeviceGroupMembership.groupId}, deviceId=${kafkaDeviceGroupMembership.deviceId}")
+        logger.info("Mapping KafkaDeviceGroupMembership: groupId=${kafkaDeviceGroupMembership.deviceGroupId}, deviceId=${kafkaDeviceGroupMembership.deviceId}")
 
         val id = existing?.id ?: DeviceGroupMembershipId(
             deviceGroupId = group.id!!,

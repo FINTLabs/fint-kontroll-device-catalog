@@ -39,7 +39,7 @@ class EntityPersistenceService(
     }
 
     private fun handleDevice(kafkaDevice: KafkaDevice) {
-        val existingDevice = deviceRepository.findBySourceId(kafkaDevice.systemId)
+        val existingDevice = deviceRepository.findBySourceId(kafkaDevice.sourceId)
         val mappedDevice = entityMappingService.mapKafkaDeviceToDevice(kafkaDevice, existingDevice)
         val savedDevice: Device = deviceRepository.save(mappedDevice)
         val kontrollDevice: KontrollDevice = kontrollEntityMappingService.mapDeviceToKontrollDevice(savedDevice)
@@ -47,7 +47,7 @@ class EntityPersistenceService(
     }
 
     private fun handleDeviceGroup(kafka: KafkaDeviceGroup) {
-        val existing = deviceGroupRepository.findBySourceId(kafka.systemId)
+        val existing = deviceGroupRepository.findBySourceId(kafka.sourceId)
         val mapped = entityMappingService.mapKafkaDeviceGroupToDeviceGroup(kafka, existing)
         val savedDeviceGroup: DeviceGroup = deviceGroupRepository.save(mapped)
         publishDeviceGroup(savedDeviceGroup)
@@ -61,8 +61,8 @@ class EntityPersistenceService(
     }
 
     private fun handleDeviceGroupMembership(kafkaDeviceGroupMembership: KafkaDeviceGroupMembership) {
-        logger.debug("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.groupId}")
-        val group = deviceGroupRepository.findBySourceId(kafkaDeviceGroupMembership.groupId)
+        logger.debug("Handling membership for ${kafkaDeviceGroupMembership.deviceId}_${kafkaDeviceGroupMembership.deviceGroupId}")
+        val group = deviceGroupRepository.findBySourceId(kafkaDeviceGroupMembership.deviceGroupId)
         val device = deviceRepository.findBySourceId(kafkaDeviceGroupMembership.deviceId)
 
         if (group == null || device == null) {

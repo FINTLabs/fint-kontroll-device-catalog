@@ -13,7 +13,7 @@ class DeviceGroupMembershipRetryBuffer {
     private val buffer: Queue<KafkaDeviceGroupMembership> = ConcurrentLinkedQueue()
 
     fun add(membership: KafkaDeviceGroupMembership) {
-        logger.info("Buffered membership for retry: ${membership.deviceId}_${membership.groupId}")
+        logger.info("Buffered membership for retry: ${membership.deviceId}_${membership.deviceGroupId}")
         buffer.add(membership)
     }
 

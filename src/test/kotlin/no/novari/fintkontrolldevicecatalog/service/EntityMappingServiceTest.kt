@@ -21,7 +21,7 @@ class EntityMappingServiceTest {
     @Test
     fun `mapKafkaDeviceToDevice should map entity from kafka to internal entity (new device)`() {
         val kafka = KafkaDevice(
-            systemId = "sys-1",
+            sourceId = "sys-1",
             serialNumber = "SN-123",
             dataObjectId = "do-1",
             name = "Device A",
@@ -72,7 +72,7 @@ class EntityMappingServiceTest {
         )
 
         val kafka = KafkaDevice(
-            systemId = "sys-1",
+            sourceId = "sys-1",
             serialNumber = "NEW-SN",          // always overwrites
             dataObjectId = null,              // should keep old-do
             name = null,                      // should keep Old Name
@@ -128,7 +128,7 @@ class EntityMappingServiceTest {
         )
 
         val kafka = KafkaDevice(
-            systemId = "sys-1",
+            sourceId = "sys-1",
             serialNumber = "SN",
             dataObjectId = "do",
             name = "Name",
@@ -169,7 +169,7 @@ class EntityMappingServiceTest {
         )
 
         val kafka = KafkaDevice(
-            systemId = "sys-1",
+            sourceId = "sys-1",
             serialNumber = "SN",
             dataObjectId = "do",
             name = "Name",
@@ -191,7 +191,7 @@ class EntityMappingServiceTest {
     @Test
     fun `mapKafkaDeviceGroupToDeviceGroup should map new group`() {
         val kafka = KafkaDeviceGroup(
-            systemId = "grp-1",
+            sourceId = "grp-1",
             name = "Group A",
             orgUnitId = "ou-1",
             orgUnitName = "ou-1",
@@ -240,8 +240,9 @@ class EntityMappingServiceTest {
         )
 
         val kafkaMembership = KafkaDeviceGroupMembership(
-            groupId = "grp-1",
-            deviceId = "sys-1"
+            deviceGroupId = "grp-1",
+            deviceId = "sys-1",
+            sourceId = "1_1"
         )
 
         val result = service.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
@@ -298,8 +299,9 @@ class EntityMappingServiceTest {
         )
 
         val kafkaMembership = KafkaDeviceGroupMembership(
-            groupId = "grp-1",
-            deviceId = "sys-1"
+            deviceGroupId = "grp-1",
+            deviceId = "sys-1",
+            sourceId = "1_1"
         )
 
         val result = service.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(

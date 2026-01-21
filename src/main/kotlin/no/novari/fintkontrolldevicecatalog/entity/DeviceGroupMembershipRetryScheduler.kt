@@ -25,7 +25,7 @@ class DeviceGroupMembershipRetryScheduler(
             try {
                 entityPersistenceService.handle(membership)
             } catch (e: Exception) {
-                logger.info("Retry failed for ${membership.deviceId}_${membership.groupId}: ${e.message}")
+                logger.info("Retry failed for ${membership.deviceId}_${membership.deviceGroupId}: ${e.message}")
                 deviceGroupMembershipRetryBuffer.add(membership)
             }
         }
