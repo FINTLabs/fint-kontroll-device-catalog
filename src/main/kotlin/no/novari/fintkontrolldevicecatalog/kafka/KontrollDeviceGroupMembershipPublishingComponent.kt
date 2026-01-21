@@ -66,12 +66,12 @@ class KontrollDeviceGroupMembershipPublishingComponent(
     fun publishOne(kontrollDeviceGroupMembership: KontrollDeviceGroupMembership) {
         val produserRecord = ParameterizedProducerRecord.builder<KontrollDeviceGroupMembership>()
             .topicNameParameters(entityTopicNameParameters)
-            .key("${kontrollDeviceGroupMembership.deviceGroupId}_${kontrollDeviceGroupMembership.deviceGroupId}")
+            .key("${kontrollDeviceGroupMembership.deviceId}_${kontrollDeviceGroupMembership.deviceGroupId}")
             .value(kontrollDeviceGroupMembership)
             .build()
 
         parameterizedTemplate.send(produserRecord)
-        logger.info("Published kontrolldevicemembership with sourceId: ${kontrollDeviceGroupMembership.deviceGroupId}_${kontrollDeviceGroupMembership.deviceGroupId}")
+        logger.info("Published kontrolldevicemembership with sourceId: ${kontrollDeviceGroupMembership.deviceId}_${kontrollDeviceGroupMembership.deviceGroupId}")
     }
 
 
