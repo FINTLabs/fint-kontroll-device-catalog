@@ -72,12 +72,6 @@ class KontrollEntityService(
         return device?.let { kontrollEntityMappingService.mapDeviceToKontrollDevice(it) }
     }
 
-    fun findDevicesInDeviceGroupByDeviceGroupId(id: Long): List<KontrollDevice> {
-        val devices: List<Device> = deviceGroupMembershipRepository.getDevicesInDeviceGroupByDeviceGroupId(id)
-
-        return devices.map { device ->
-            kontrollEntityMappingService.mapDeviceToKontrollDevice(device) }
-    }
 
     fun findAllMemberships(): List<KontrollDeviceGroupMembership> {
         val deviceGroupMemberships = deviceGroupMembershipRepository.findAll()
@@ -87,9 +81,23 @@ class KontrollEntityService(
         }.toList()
     }
 
-    fun findAllGroupsPaged(pageRequest: Pageable): Page<DeviceGroup> {
+    fun findAllGroupsPaged(pageRequest: Pageable): Page<KontrollDeviceGroup> {
+        val deviceGroupsPaged = deviceGroupRepository.findAll(pageRequest)
 
-        return deviceGroupRepository.findAll(pageRequest)
+        return deviceGroupsPaged.map(kontrollEntityMappingService::mapDeviceGroupToKontrollDeviceGroup)
+    }
+
+    fun findAllDevicesPaged(pageRequest: Pageable): Page<KontrollDevice> {
+        val allDevices = deviceRepository.findAll(pageRequest)
+
+        return allDevices.map { kontrollEntityMappingService.mapDeviceToKontrollDevice(it) }
+    }
+
+
+    fun findDevicesInDeviceGroupByDeviceGroupId(id: Long, pageRequest: Pageable): Page<KontrollDevice> {
+        val devicesPage: Page<Device> = deviceGroupMembershipRepository.getDevicesInDeviceGroupByDeviceGroupIdPaged(id, pageRequest)
+
+        return devicesPage.map(kontrollEntityMappingService::mapDeviceToKontrollDevice)
     }
 
 

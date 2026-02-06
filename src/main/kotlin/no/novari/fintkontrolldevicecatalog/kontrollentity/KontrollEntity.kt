@@ -1,6 +1,5 @@
 package no.novari.fintkontrolldevicecatalog.kontrollentity
 
-import java.util.Date
 
 sealed interface KontrollEntity
 
