@@ -6,17 +6,19 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 
 object KontrollEntityControllerResponse {
-
-    fun <T> toPage(list: List<T>, paging: Pageable): Page<T> =
+    fun <T> toPage(
+        list: List<T>,
+        paging: Pageable,
+    ): Page<T> =
         PageImpl(
             list.drop(paging.offset.toInt()).take(paging.pageSize),
             paging,
-            list.size.toLong()
+            list.size.toLong(),
         )
 
     fun <T> pageResponse(
         page: Page<T>,
-        itemKey: String
+        itemKey: String,
     ): ResponseEntity<Map<String, Any?>> =
         ResponseEntity.ok(
             mapOf(
@@ -24,8 +26,8 @@ object KontrollEntityControllerResponse {
                 "currentPage" to page.number,
                 "totalPages" to page.totalPages,
                 "totalItems" to page.totalElements,
-                "itemsInPage" to page.numberOfElements
-            )
+                "itemsInPage" to page.numberOfElements,
+            ),
         )
 
     fun <T : Any> toResponseEntity(entity: T?): ResponseEntity<T> =

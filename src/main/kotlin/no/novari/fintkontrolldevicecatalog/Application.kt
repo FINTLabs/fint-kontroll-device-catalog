@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication(
-    scanBasePackages = ["no.novari","no.fintlabs"]
+    scanBasePackages = ["no.novari", "no.fintlabs"],
 )
 @EnableScheduling
 class Application

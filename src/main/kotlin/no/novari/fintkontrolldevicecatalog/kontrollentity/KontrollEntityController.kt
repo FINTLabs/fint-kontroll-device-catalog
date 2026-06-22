@@ -1,6 +1,5 @@
 package no.novari.fintkontrolldevicecatalog.kontrollentity
 
-
 import no.fintlabs.util.OnlyDevelopers
 import no.novari.fintkontrolldevicecatalog.entity.DeviceGroup
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupMembershipPublishingComponent
@@ -15,8 +14,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-
-
 private val logger = LoggerFactory.getLogger(KontrollEntityController::class.java)
 
 @RestController
@@ -25,44 +22,42 @@ class KontrollEntityController(
     val kontrollEntityService: KontrollEntityService,
     val kontrollDeviceGroupPublishingComponent: KontrollDeviceGroupPublishingComponent,
     val kontrollDevicePublishingComponent: KontrollDevicePublishingComponent,
-    val kontrollDeviceGroupMembershipPublishingComponent: KontrollDeviceGroupMembershipPublishingComponent
+    val kontrollDeviceGroupMembershipPublishingComponent: KontrollDeviceGroupMembershipPublishingComponent,
 ) {
     private val responseUtils = KontrollEntityControllerResponse
 
-
     @GetMapping("/devicegroups")
     fun getKontrollDeviceGroups(
-        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable
+        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable,
     ): ResponseEntity<Map<String, Any?>> {
-        val allGroupsPaged : Page<KontrollDeviceGroup> = kontrollEntityService.findAllGroupsPaged(pageRequest)
+        val allGroupsPaged: Page<KontrollDeviceGroup> = kontrollEntityService.findAllGroupsPaged(pageRequest)
 
         return responseUtils.pageResponse(allGroupsPaged, itemKey = "deviceGroups")
     }
 
     @GetMapping("/devicegroups/{id}")
-    fun getDeviceGroupByID(@PathVariable id: Long): ResponseEntity<KontrollDeviceGroup> =
-        responseUtils.toResponseEntity( kontrollEntityService.findDeviceGroupByID(id))
-
+    fun getDeviceGroupByID(
+        @PathVariable id: Long,
+    ): ResponseEntity<KontrollDeviceGroup> = responseUtils.toResponseEntity(kontrollEntityService.findDeviceGroupByID(id))
 
     @GetMapping("/devices")
     fun getKontrollDevices(
-        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable
-    ) : ResponseEntity<Map<String, Any?>> {
+        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable,
+    ): ResponseEntity<Map<String, Any?>> {
         val allDevicespaged: Page<KontrollDevice> = kontrollEntityService.findAllDevicesPaged(pageRequest)
 
         return responseUtils.pageResponse(allDevicespaged, itemKey = "devices")
     }
 
-
     @GetMapping("/devices/{id}")
-    fun getDeviceById(@PathVariable id: Long): ResponseEntity<KontrollDevice> =
-        responseUtils.toResponseEntity(kontrollEntityService.findDeviceById(id))
-
+    fun getDeviceById(
+        @PathVariable id: Long,
+    ): ResponseEntity<KontrollDevice> = responseUtils.toResponseEntity(kontrollEntityService.findDeviceById(id))
 
     @GetMapping("/devicegroups/{id}/members")
     fun getDeviceGroupMembershipsByDeviceGroupId(
         @PathVariable id: Long,
-        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable
+        @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable,
     ): ResponseEntity<Map<String, Any?>> {
         val allMembersPaged: Page<KontrollDevice> = kontrollEntityService.findDevicesInDeviceGroupByDeviceGroupId(id, pageRequest)
 
