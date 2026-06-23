@@ -66,8 +66,10 @@ class DeviceConsumerConfiguration(
 
     private fun listenerConfiguration() =
         ListenerConfiguration
-            .builder()
-            .seekingOffsetResetOnAssignment(false)
-            .maxPollRecords(10)
+            .stepBuilder()
+            .groupIdApplicationDefault()
+            .maxPollRecordsKafkaDefault()
+            .maxPollIntervalKafkaDefault()
+            .continueFromPreviousOffsetOnAssignment()
             .build()
 }

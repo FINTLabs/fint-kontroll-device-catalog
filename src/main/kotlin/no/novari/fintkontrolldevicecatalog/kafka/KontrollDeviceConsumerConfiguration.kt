@@ -71,8 +71,10 @@ class KontrollDeviceConsumerConfiguration(
 
     private fun listenerConfiguration() =
         ListenerConfiguration
-            .builder()
-            .seekingOffsetResetOnAssignment(false)
-            .maxPollRecords(10)
+            .stepBuilder()
+            .groupIdApplicationDefault()
+            .maxPollRecordsKafkaDefault()
+            .maxPollIntervalKafkaDefault()
+            .seekToBeginningOnAssignment()
             .build()
 }

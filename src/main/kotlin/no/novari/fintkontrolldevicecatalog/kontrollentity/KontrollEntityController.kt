@@ -1,7 +1,6 @@
 package no.novari.fintkontrolldevicecatalog.kontrollentity
 
 import no.fintlabs.util.OnlyDevelopers
-import no.novari.fintkontrolldevicecatalog.entity.DeviceGroup
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupMembershipPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDeviceGroupPublishingComponent
 import no.novari.fintkontrolldevicecatalog.kafka.KontrollDevicePublishingComponent
