@@ -2,11 +2,14 @@ package no.novari.fintkontrolldevicecatalog.entity
 
 import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface DeviceGroupRepository: JpaRepository<DeviceGroup, Long> {
+interface DeviceGroupRepository :
+    JpaRepository<DeviceGroup, Long>,
+    JpaSpecificationExecutor<DeviceGroup> {
     fun findBySourceId(sourceId: String): DeviceGroup?
 
     @Modifying
@@ -20,7 +23,9 @@ interface DeviceGroupRepository: JpaRepository<DeviceGroup, Long> {
             where dgm.deviceGroup.id = :groupId
         )
         where g.id = :groupId
-        """
+        """,
     )
-    fun syncNoOfMembers(@Param("groupId") groupId: Long): Int
+    fun syncNoOfMembers(
+        @Param("groupId") groupId: Long,
+    ): Int
 }
