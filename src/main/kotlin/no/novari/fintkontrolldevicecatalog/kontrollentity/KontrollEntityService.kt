@@ -88,10 +88,21 @@ class KontrollEntityService(
             }.toList()
     }
 
-    fun findAllGroupsPaged(pageRequest: Pageable): Page<KontrollDeviceGroup> {
-        val deviceGroupsPaged = deviceGroupRepository.findAll(pageRequest)
+    fun findAllGroupsPaged(
+        pageRequest: Pageable,
+        search: String?,
+        orgUnits: List<String>?,
+        platform: String?,
+    ): Page<KontrollDeviceGroup> {
+        val deviceGroupSpecification: Specification<DeviceGroup> =
+            Specification.allOf(
+                DeviceGroupSpecification.hasNameLike(search),
+                DeviceGroupSpecification.plattformIs(platform),
+                DeviceGroupSpecification.deviceInOrgUnitValidForUser(orgUnits),
+            )
 
-        return deviceGroupsPaged.map(kontrollEntityMappingService::mapDeviceGroupToKontrollDeviceGroup)
+        val allDeviceGroups = deviceGroupRepository.findAll(deviceGroupSpecification, pageRequest)
+        return allDeviceGroups.map(kontrollEntityMappingService::mapDeviceGroupToKontrollDeviceGroup)
     }
 
     fun findAllDevicesPaged(pageRequest: Pageable): Page<KontrollDevice> {
