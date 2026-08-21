@@ -6,13 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface DeviceGroupMembershipRepository: JpaRepository<DeviceGroupMembership, DeviceGroupMembershipId> {
-
+interface DeviceGroupMembershipRepository : JpaRepository<DeviceGroupMembership, DeviceGroupMembershipId> {
     @Query("select d.device from DeviceGroupMembership d where d.deviceGroup.id = :id")
-    fun getDevicesInDeviceGroupByDeviceGroupId(@Param("id") id : Long): List<Device>
-
     fun getDevicesInDeviceGroupByDeviceGroupIdPaged(
-        @Param("id") id : Long,
+        @Param("id") id: Long,
         pageable: Pageable,
     ): Page<Device>
 
@@ -25,9 +22,8 @@ interface DeviceGroupMembershipRepository: JpaRepository<DeviceGroupMembership, 
         """,
     )
     fun getDevicesInDeviceGroupByDeviceGroupIdPagedWithSearch(
-        @Param("id") id : Long,
+        @Param("id") id: Long,
         @Param("search") search: String,
         pageable: Pageable,
     ): Page<Device>
-
 }
