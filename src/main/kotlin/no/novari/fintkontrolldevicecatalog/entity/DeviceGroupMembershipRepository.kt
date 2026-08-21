@@ -11,7 +11,23 @@ interface DeviceGroupMembershipRepository: JpaRepository<DeviceGroupMembership, 
     @Query("select d.device from DeviceGroupMembership d where d.deviceGroup.id = :id")
     fun getDevicesInDeviceGroupByDeviceGroupId(@Param("id") id : Long): List<Device>
 
-    @Query("select d.device from DeviceGroupMembership d where d.deviceGroup.id = :id")
-    fun getDevicesInDeviceGroupByDeviceGroupIdPaged(@Param("id") id : Long, pagable: Pageable): Page<Device>
+    fun getDevicesInDeviceGroupByDeviceGroupIdPaged(
+        @Param("id") id : Long,
+        pageable: Pageable,
+    ): Page<Device>
+
+    @Query(
+        """
+        select d.device
+        from DeviceGroupMembership d
+        where d.deviceGroup.id = :id
+        and lower(coalesce(d.device.name, '')) like lower(concat('%', :search, '%'))
+        """,
+    )
+    fun getDevicesInDeviceGroupByDeviceGroupIdPagedWithSearch(
+        @Param("id") id : Long,
+        @Param("search") search: String,
+        pageable: Pageable,
+    ): Page<Device>
 
 }

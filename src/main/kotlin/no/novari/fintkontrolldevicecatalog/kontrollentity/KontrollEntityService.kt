@@ -114,8 +114,22 @@ class KontrollEntityService(
     fun findDevicesInDeviceGroupByDeviceGroupId(
         id: Long,
         pageRequest: Pageable,
+        search: String?,
     ): Page<KontrollDevice> {
-        val devicesPage: Page<Device> = deviceGroupMembershipRepository.getDevicesInDeviceGroupByDeviceGroupIdPaged(id, pageRequest)
+        val searchTerm = search?.trim()
+        val devicesPage: Page<Device> =
+            if (searchTerm.isNullOrEmpty()) {
+                deviceGroupMembershipRepository.getDevicesInDeviceGroupByDeviceGroupIdPaged(
+                    id,
+                    pageRequest,
+                )
+            } else {
+                deviceGroupMembershipRepository.getDevicesInDeviceGroupByDeviceGroupIdPagedWithSearch(
+                    id,
+                    searchTerm,
+                    pageRequest,
+                )
+            }
 
         return devicesPage.map(kontrollEntityMappingService::mapDeviceToKontrollDevice)
     }

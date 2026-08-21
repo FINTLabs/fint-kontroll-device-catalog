@@ -75,8 +75,14 @@ class KontrollEntityController(
     fun getDeviceGroupMembershipsByDeviceGroupId(
         @PathVariable id: Long,
         @ParameterObject @PageableDefault(size = 20) pageRequest: Pageable,
+        @RequestParam(required = false) search: String?,
     ): ResponseEntity<Map<String, Any?>> {
-        val allMembersPaged: Page<KontrollDevice> = kontrollEntityService.findDevicesInDeviceGroupByDeviceGroupId(id, pageRequest)
+        val allMembersPaged: Page<KontrollDevice> =
+            kontrollEntityService.findDevicesInDeviceGroupByDeviceGroupId(
+                id,
+                pageRequest,
+                search,
+            )
 
         return responseUtils.pageResponse(allMembersPaged, itemKey = "members")
     }
