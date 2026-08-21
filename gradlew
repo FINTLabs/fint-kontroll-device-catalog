@@ -116,6 +116,11 @@ esac
 
 CLASSPATH="\\\"\\\""
 
+if [ -z "$JAVA_HOME" ] && "$darwin" && [ -x /usr/libexec/java_home ] ; then
+    JAVA_HOME=$( /usr/libexec/java_home -v 21 2>/dev/null )
+    export JAVA_HOME
+fi
+
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
