@@ -85,7 +85,7 @@ jobs:
         run: ./gradlew build --no-daemon
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v4
+        uses: docker/login-action@v4.6.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -93,7 +93,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6.2.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -114,6 +114,20 @@ jobs:
           kustomizationPath: 'kustomize/overlays/${{ steps.environment.outputs.result }}/${{ env.ORG}}'
         id: bake
 
+      - name: Substitute image into baked YAML
+        id: substitute
+        uses: Azure/k8s-artifact-substitute@v2
+        with:
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
+          images: ${{ steps.meta.outputs.tags }}
+
+      - name: Copy substituted manifest into workspace
+        id: bake-in-workspace
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/.baked"
+          cp "${{ steps.substitute.outputs.manifests }}" "$GITHUB_WORKSPACE/.baked/manifest.yaml"
+          echo "manifest=$GITHUB_WORKSPACE/.baked/manifest.yaml" >> "$GITHUB_OUTPUT"
+
       - uses: azure/login@v3
         with:
           creds: "${{ secrets[format('AKS_{0}_FINT_GITHUB', steps.environment.outputs.result)] }}"
@@ -133,8 +147,7 @@ jobs:
       - name: Deploy to ${{ env.CLUSTER_NAME }}
         uses: azure/k8s-deploy@v7.0.0
         with:
-          manifests: ${{ steps.bake.outputs.manifestsBundle }}
-          images: |
-            ${{ steps.meta.outputs.tags }}
+          manifests: ${{ steps.bake-in-workspace.outputs.manifest }}
           namespace: ${{ env.ORG }}
           action: deploy
+          pull-images: false
