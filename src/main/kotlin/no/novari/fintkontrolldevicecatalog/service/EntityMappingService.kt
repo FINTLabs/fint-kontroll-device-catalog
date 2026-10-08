@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 private val logger = LoggerFactory.getLogger("EntityMappingService")
+private const val INITIAL_MEMBERSHIP_STATUS = "ACTIVE"
 
 @Service
 class EntityMappingService {
@@ -96,8 +97,8 @@ class EntityMappingService {
             id = id,
             deviceGroup = group,
             device = device,
-            membershipStatus = null,
-            membershipStatusChanged = null
+            membershipStatus = INITIAL_MEMBERSHIP_STATUS,
+            membershipStatusChanged = Date()
         )
 
         return base.copy(

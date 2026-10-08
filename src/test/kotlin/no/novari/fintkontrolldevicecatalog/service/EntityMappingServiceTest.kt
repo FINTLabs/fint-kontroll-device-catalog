@@ -256,8 +256,8 @@ class EntityMappingServiceTest {
         assertEquals(10L, result.id.deviceId)
         assertSame(group, result.deviceGroup)
         assertSame(device, result.device)
-        assertNull(result.membershipStatus)
-        assertNull(result.membershipStatusChanged)
+        assertEquals("ACTIVE", result.membershipStatus)
+        assertNotNull(result.membershipStatusChanged)
     }
 
     @Test

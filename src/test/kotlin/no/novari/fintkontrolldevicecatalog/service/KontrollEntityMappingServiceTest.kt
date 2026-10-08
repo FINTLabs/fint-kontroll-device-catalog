@@ -179,7 +179,7 @@ class KontrollEntityMappingServiceTest {
     }
 
     @Test
-    fun `mapDeviceGroupMembershipToKontrollDeviceGroupMembership should default ids to 0 and membershipStatus to UNKNOWN`() {
+    fun `mapDeviceGroupMembershipToKontrollDeviceGroupMembership should default ids to 0 and map membershipStatus`() {
         val device = Device(
             id = null,
             sourceId = "sys-1",
@@ -212,14 +212,14 @@ class KontrollEntityMappingServiceTest {
             id = DeviceGroupMembershipId(deviceGroupId = 0L, deviceId = 0L),
             deviceGroup = group,
             device = device,
-            membershipStatus = null,
-            membershipStatusChanged = null
+            membershipStatus = "ACTIVE",
+            membershipStatusChanged = Date()
         )
 
         val result = service.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(membership)
 
         assertEquals(0L, result.deviceGroupId)
         assertEquals(0L, result.deviceId)
-        assertEquals("UNKNOWN", result.membershipStatus)
+        assertEquals("ACTIVE", result.membershipStatus)
     }
 }
