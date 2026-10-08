@@ -20,6 +20,9 @@ data class DeviceGroupMembership(
     @JoinColumn(name = "device_id", nullable = false)
     val device: Device,
 
-    val membershipStatus: String? = null,
-    val membershipStatusChanged: Date? = null
+    @Column(nullable = false)
+    val membershipStatus: String,
+
+    @Column(nullable = false)
+    val membershipStatusChanged: Date
 )

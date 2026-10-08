@@ -56,7 +56,7 @@ class KontrollEntityMappingService {
         return KontrollDeviceGroupMembership(
             deviceGroupId = deviceGroupMembership.deviceGroup.id ?: 0,
             deviceId = deviceGroupMembership.device.id ?: 0,
-            membershipStatus = deviceGroupMembership.membershipStatus ?: "UNKNOWN",
+            membershipStatus = deviceGroupMembership.membershipStatus,
         )
     }
 
