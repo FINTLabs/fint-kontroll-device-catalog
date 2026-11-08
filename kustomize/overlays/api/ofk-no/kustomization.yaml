@@ -32,6 +32,9 @@ patches:
         path: "/spec/kafka/acls/1/topic"
         value: "ofk-no.kontroll.*"
       - op: replace
+        path: "/spec/env/3/value"
+        value: "ofk-no"
+      - op: replace
         path: "/spec/env/0/value"
         value: "https://role-catalog.vigoiks.no/vigo/kontroll/user"
       - op: replace

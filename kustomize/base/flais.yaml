@@ -31,6 +31,8 @@ spec:
       value: "vigo.no"
     - name: spring.kafka.consumer.group-id
       value: 'fint-kontroll-device-catalog'
+    - name: novari.kafka.topic.org-id
+      value: 'fintlabs-no'
 
   observability:
     metrics:
