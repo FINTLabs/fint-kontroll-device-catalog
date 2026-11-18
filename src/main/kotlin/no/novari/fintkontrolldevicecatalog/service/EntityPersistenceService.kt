@@ -13,6 +13,7 @@ import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroup
 import no.novari.fintkontrolldevicecatalog.kontrollentity.KontrollDeviceGroupMembership
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.util.Date
 
 private val logger = LoggerFactory.getLogger("EntityPersistenceService")
 
@@ -44,6 +45,25 @@ class EntityPersistenceService(
         val savedDevice: Device = deviceRepository.save(mappedDevice)
         val kontrollDevice: KontrollDevice = kontrollEntityMappingService.mapDeviceToKontrollDevice(savedDevice)
         kontrollDevicePublishingComponent.publishOne(kontrollDevice)
+
+        if (existingDevice == null || existingDevice.status == savedDevice.status) return
+
+        val membershipStatus = if (savedDevice.status == "ACTIVE") "ACTIVE" else "INACTIVE"
+
+        deviceGroupMembershipRepository.findAllByDeviceId(savedDevice.id!!)
+            .filter { it.membershipStatus != membershipStatus }
+            .forEach { membership ->
+                val updated = deviceGroupMembershipRepository.save(
+                    membership.copy(
+                        device = savedDevice,
+                        membershipStatus = membershipStatus,
+                        membershipStatusChanged = Date()
+                    )
+                )
+                kontrollDeviceGroupMembershipPublishingComponent.publishOne(
+                    kontrollEntityMappingService.mapDeviceGroupMembershipToKontrollDeviceGroupMembership(updated)
+                )
+            }
     }
 
     private fun handleDeviceGroup(kafka: KafkaDeviceGroup) {

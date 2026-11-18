@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface DeviceGroupMembershipRepository : JpaRepository<DeviceGroupMembership, DeviceGroupMembershipId> {
+    fun findAllByDeviceId(deviceId: Long): List<DeviceGroupMembership>
+
     @Query("select d.device from DeviceGroupMembership d where d.deviceGroup.id = :id")
     fun getDevicesInDeviceGroupByDeviceGroupIdPaged(
         @Param("id") id: Long,

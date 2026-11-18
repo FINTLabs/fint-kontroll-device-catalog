@@ -258,10 +258,18 @@ class EntityMappingServiceTest {
         assertSame(device, result.device)
         assertEquals("ACTIVE", result.membershipStatus)
         assertNotNull(result.membershipStatusChanged)
+
+        listOf("INVALID", "INACTIVE").forEach { deviceStatus ->
+            val inactive = service.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
+                kafkaMembership, device.copy(status = deviceStatus), group
+            )
+            assertEquals("INACTIVE", inactive.membershipStatus)
+            assertNotNull(inactive.membershipStatusChanged)
+        }
     }
 
     @Test
-    fun `mapKafkaDeviceGroupMembershipToDeviceGroupMembership should preserve membership status fields when existing provided`() {
+    fun `mapKafkaDeviceGroupMembershipToDeviceGroupMembership should derive status and update date only on change`() {
         val device = Device(
             id = 10L,
             sourceId = "sys-1",
@@ -311,9 +319,20 @@ class EntityMappingServiceTest {
             existing = existing
         )
 
-        assertEquals("MEMBER", result.membershipStatus)
-        assertEquals(Date(2_000), result.membershipStatusChanged)
+        assertEquals("ACTIVE", result.membershipStatus)
+        assertTrue(result.membershipStatusChanged.after(existing.membershipStatusChanged))
         assertSame(group, result.deviceGroup)
         assertSame(device, result.device)
+
+        val unchanged = service.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
+            kafkaMembership, device, group, result
+        )
+        assertEquals(result.membershipStatusChanged, unchanged.membershipStatusChanged)
+
+        val inactive = service.mapKafkaDeviceGroupMembershipToDeviceGroupMembership(
+            kafkaMembership, device.copy(status = "INVALID"), group, existing
+        )
+        assertEquals("INACTIVE", inactive.membershipStatus)
+        assertTrue(inactive.membershipStatusChanged.after(existing.membershipStatusChanged))
     }
 }

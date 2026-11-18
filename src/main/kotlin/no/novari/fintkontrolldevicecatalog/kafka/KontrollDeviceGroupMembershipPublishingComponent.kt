@@ -1,7 +1,5 @@
 package no.novari.fintkontrolldevicecatalog.kafka
 
-import jakarta.annotation.PostConstruct
-import no.novari.cache.FintCache
 import no.novari.kafka.producing.ParameterizedTemplate
 import no.novari.kafka.producing.ParameterizedTemplateFactory
 import no.novari.kafka.topic.EntityTopicService
